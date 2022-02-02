@@ -1,0 +1,12 @@
+[programs.devnet]
+tac_toe = "8aKAyuViuihkt1m5uFFMJy6WwiaQzky6pvxYG1PFmxLT"
+
+[registry]
+url = "https://anchor.projectserum.com"
+
+[provider]
+cluster = "devnet"
+wallet = "/home/nick/.config/solana/id.json"
+
+[scripts]
+test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
