@@ -152,7 +152,7 @@ impl Game {
             }
         }
 
-        // game has not been won
+        // game has not been won.
         // game has no more free tiles
         // -> game ends in a tie
         self.state = GameState::Tie;
