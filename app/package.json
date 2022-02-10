@@ -1,7 +1,7 @@
 {
   "name": "app",
   "version": "1.0.0",
-  "source": "src/index.html",
+  "source": "app/src/index.html",
   "license": "GPL-3.0",
   "scripts": {
     "clean": "shx rm -rf dist .parcel-cache",
