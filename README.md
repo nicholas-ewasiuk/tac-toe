@@ -28,8 +28,6 @@ Navigate to `http://localhost:1234/` to explore the deployed application.
 
 ## Playing the game
 
-Demo at <a href=https://tictactoe-ui.vercel.app>https://tictactoe-ui.vercel.app/</a>.
-
 Connect a wallet. Can create one using <a href=https://phantom.app>phantom.app</a> .
 
 Request airdrop of SOL for transaction fees.
