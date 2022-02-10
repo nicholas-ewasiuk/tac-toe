@@ -233,7 +233,7 @@ export const NewPage: FC = () => {
                     <WalletMultiButton />
                     <WalletDisconnectButton />
                     <div className={styles.player}>
-                        Player One:
+                        Player One: 
                         {playerOne 
                             ? playerOne.toString() 
                             : <button 
