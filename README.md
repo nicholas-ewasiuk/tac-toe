@@ -27,7 +27,6 @@ The app points to a program already deployed on devnet. Replace the IDL file and
 Navigate to `http://localhost:1234/` to explore the deployed application.
 
 ## Playing the game
-*Some issues with the wallet-adapter and deploying a live site, so need to deploy locally for now.
 
 Connect a wallet. Can create one using <a href=https://phantom.app>phantom.app</a> .
 
