@@ -44,6 +44,18 @@
     margin: 0 0 0 1em;
 }
 
+.airdrop {
+    display: flex;
+    flex-direction: row;
+    margin: 2em 0 0 0;
+}
+
+.airdrop button {
+    display: flex;
+    flex-direction: row;
+    margin: 0 0 0 1em;
+}
+
 @media (max-width: 767px) {
     .root {
         flex-direction: column;

@@ -1,7 +1,8 @@
-import React, { ChangeEventHandler, FC, useState, FormEventHandler, MouseEventHandler, useEffect } from 'react';
+import React, { useCallback, ChangeEventHandler, FC, useState, FormEventHandler, MouseEventHandler, useEffect } from 'react';
 import {  Program, Idl } from '@project-serum/anchor';
-import { AccountInfo, Keypair, ParsedAccountData, PublicKey, Struct, SystemProgram } from '@solana/web3.js';
+import { AccountInfo, Keypair, LAMPORTS_PER_SOL, ParsedAccountData, PublicKey, Struct, SystemProgram } from '@solana/web3.js';
 import { newProgram, SuperCoder } from '@saberhq/anchor-contrib';
+import { PendingTransaction } from '@saberhq/solana-contrib';
 import { useSolana, useConnectedWallet } from '@saberhq/use-solana';
 import { WalletDisconnectButton, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { Buffer } from 'buffer';
@@ -15,6 +16,7 @@ import { Board } from '../components/Board';
 
 
 export const NewPage: FC = () => {
+    const [ balance, setBalance ] = useState<number | null>(null);
     const [ currentGame, setCurrentGame ] = useState<PublicKey | null>(null);
     const [ gameInput, setGameInput ] = useState<string>("");
     const [ playerOne, setPlayerOne ] = useState<PublicKey | null>(null);
@@ -43,6 +45,17 @@ export const NewPage: FC = () => {
             getBoardData();
         }
     },[wallet, currentGame])
+
+    const refetchSOL = useCallback(async () => {
+        if (wallet && providerMut) {
+          setBalance(await providerMut.connection.getBalance(wallet.publicKey));
+        }
+      }, [providerMut, wallet]);
+
+    useEffect(() => {
+        void refetchSOL();
+      }, [refetchSOL]);
+
 
     const setupGame = async () => {
         if (wallet && providerMut) {
@@ -190,7 +203,7 @@ export const NewPage: FC = () => {
     const handleTurnSubmit: MouseEventHandler<Element> = async (event) => {
         event.preventDefault();
         const target = event.target;
-        if (target instanceof HTMLLIElement && target.value) {
+        if (target instanceof HTMLLIElement) {
             const row = target.parentNode.parentNode.value;
             const column = target.value;
             const turnInput = `{row: ${row}, column: ${column}}`
@@ -276,6 +289,30 @@ export const NewPage: FC = () => {
                       </label>
                       <input type="submit" value="Submit" />
                     </form>
+                    <div className={styles.airdrop}>
+                        <div>
+                            Balance:{" "}
+                            {typeof balance === "number"
+                                ? `${(balance / LAMPORTS_PER_SOL).toLocaleString()} SOL`
+                                : "--"} 
+                        </div>
+                        <button 
+                        disabled={!providerMut}
+                        onClick={async () => {
+                            const txSig = await connection.requestAirdrop(
+                                providerMut.wallet.publicKey,
+                                LAMPORTS_PER_SOL
+                            );
+                            await new PendingTransaction(
+                                providerMut.connection,
+                                txSig
+                            ).wait();
+                            await refetchSOL();
+                        }}
+                        >
+                            Request 1 SOL
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

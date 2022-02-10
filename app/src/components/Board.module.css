@@ -32,3 +32,7 @@
   justify-content: center;
   align-items: center;
 }
+
+.row li ul li:hover {
+  background-color: grey;
+}
