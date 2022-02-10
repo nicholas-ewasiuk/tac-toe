@@ -17,7 +17,8 @@ import { Board } from '../components/Board';
 export const NewPage: FC = () => {
     const [ currentGame, setCurrentGame ] = useState<PublicKey | null>(null);
     const [ myGame, setMyGame ] = useState<string | null>(null);
-    const [ playerGames, setPlayerGames ] = useState<string | null>(null);
+    const [ playerOne, setPlayerOne ] = useState<PublicKey | null>(null);
+    const [ playerTwo, setPlayerTwo ] = useState<PublicKey | null>(null);
     const [ walletInput, setWalletInput ] = useState<string>('');
     const [ turnInput, setTurnInput ] = useState<string>('');
     const [ setupGameList, setSetupGameList ] = useState<{
@@ -41,6 +42,13 @@ export const NewPage: FC = () => {
         setNetwork("devnet");
     },[])
 
+    useEffect(() => {
+        if (wallet) {
+            searchGamesByPlayer(wallet.publicKey.toString());
+            getBoardData();
+        }
+    },[wallet, currentGame])
+
     const setupGame = async () => {
         if (wallet && providerMut) {
             const program = newProgram<Program>(ticTacToeIdl, TIC_TAC_TOE_ID, providerMut);
@@ -59,6 +67,7 @@ export const NewPage: FC = () => {
                 },
                 signers: [gameKeypair]
             });
+            searchGamesByPlayer(wallet.publicKey.toString());
         }
     }
 
@@ -75,6 +84,8 @@ export const NewPage: FC = () => {
                     playerTwo: player.publicKey,
                 }
             });
+            searchGamesByPlayer(wallet.publicKey.toString());
+            getBoardData();
         }
 
     }
@@ -105,7 +116,14 @@ export const NewPage: FC = () => {
     const getBoardData = async () => {
         if (currentGame) {
             const game = await getAccountData(currentGame, TIC_TAC_TOE_ID, ticTacToeIdl);
+            console.log(game);
             setGameBoard(game.board);
+            if (game.players[0]) {
+                setPlayerOne(game.players[0]);
+            }
+            if (game.players[1] && game.players[1].toString() !== "11111111111111111111111111111111") {
+                setPlayerTwo(game.players[1]);
+            }
         }
     }
 
@@ -163,25 +181,17 @@ export const NewPage: FC = () => {
         }
     }
 
-    const updateTurnInput: ChangeEventHandler<HTMLInputElement> = async (event) => {
-        setTurnInput(event.target.value);
-    }
-
-    const handleSearchSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
+    const handleTurnSubmit: MouseEventHandler<Element> = async (event) => {
         event.preventDefault();
-        console.log('A name was submitted: ' + walletInput);
-        await searchGamesByPlayer(walletInput);
-    }
-
-    const handleTurnSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
-        event.preventDefault();
+        const target = event.target;
+        console.log(target);
         const jsonStr = turnInput.replace(/(\w+:)|(\w+ :)/g, function(matchedStr) {
             return '"' + matchedStr.substring(0, matchedStr.length - 1) + '":';
           });
         const turn = JSON.parse(jsonStr) as {row: number, column: number};
         console.log('A name was submitted: ' + turn);
         await playTurn(turn);
-        await getBoardData();
+        getBoardData();
     }
 
     const getListItem: MouseEventHandler<Element> = (event) => {
@@ -200,57 +210,56 @@ export const NewPage: FC = () => {
     return (
         <div className={styles.root}>
             <div className={styles.main}>
-                <div>
-                    <WalletMultiButton />
-                    <WalletDisconnectButton />
-                </div>
-                <div>
-                    <button disabled={!providerMut} onClick={setupGame}>
-                        Create Game
-                    </button>
-                    <button disabled={!providerMut} onClick={joinGame}>
-                        Join Game
-                    </button>
-                    <button onClick={getBoardData}>
-                        Fetch Current Board
-                    </button>
-                </div>
-                <form onSubmit={handleSearchSubmit}>
-                <label>
-                    Search Games By Player Address:
-                    <input type="text" value={walletInput} onChange={updateWalletInput} />
-                </label>
-                <input type="submit" value="Submit" />
-                </form>
-                <form onSubmit={handleTurnSubmit}>
-                <label>
-                    Play Turn:
-                    <input type="text" value={turnInput} onChange={updateTurnInput} />
-                </label>
-                <input type="submit" value="Submit" />
-                </form>
-                <ul>
-                {setupGameList &&
-                    <GameList
-                    title="Setup Games:"
-                    onClick={getListItem}
-                    gameAccounts={setupGameList}
-                    />}
-                {joinedGameList &&
-                    <GameList
-                    title="Joined Games:"
-                    onClick={getListItem}
-                    gameAccounts={joinedGameList}/>}
-                </ul>
-                <div>
-                    Current Game: {myGame}
-                </div>
                 <div className={styles.game}>
+                    <div>
+                        Current Game: {myGame}
+                    </div>
                     {gameBoard && 
                     <Board
                         title="My Game"
-                        onClick={getListItem}
+                        onClick={handleTurnSubmit}
                         board={gameBoard}/>}
+                </div>
+                <div>
+                    <WalletMultiButton />
+                    <WalletDisconnectButton />
+                    <div className="player-button">
+                        Player One:
+                        {playerOne 
+                            ? playerOne.toString() 
+                            : <button 
+                                disabled={!providerMut} 
+                                onClick={setupGame}
+                                >
+                                    Create Game
+                            </button>
+                        }
+                    </div>
+                    <div className="player-button">
+                    Player Two:
+                        {playerTwo 
+                            ? playerTwo.toString() 
+                            : <button 
+                                disabled={!providerMut} 
+                                onClick={joinGame}
+                                >
+                                    Join Game
+                            </button>
+                        }
+                    </div>
+                    <ul>
+                    {setupGameList &&
+                        <GameList
+                        title="Games Created:"
+                        onClick={getListItem}
+                        gameAccounts={setupGameList}
+                        />}
+                    {joinedGameList &&
+                        <GameList
+                        title="Games Joined:"
+                        onClick={getListItem}
+                        gameAccounts={joinedGameList}/>}
+                    </ul>
                 </div>
             </div>
         </div>

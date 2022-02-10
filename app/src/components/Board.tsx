@@ -20,6 +20,7 @@ export const Board = ({title, onClick, board}: BoardProps) => {
         {row.map((element: JSX.Element, index) => 
           <li
             key={index}
+            value={element ? JSON.stringify(element) : ""}
             >
               {element ? JSON.stringify(element).slice(2,3) : ""}
           </li>)}
