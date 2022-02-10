@@ -28,14 +28,14 @@ Navigate to `http://localhost:1234/` to explore the deployed application.
 
 ## Playing the game
 
-Connect a wallet. Phantom is suggested.
+Connect a wallet. Can create one using <a href=https://phantom.app>phantom.app</a> .
 
-Request airdrop.
+Request airdrop of SOL for transaction fees.
 
-Click create game button. 
+Click "Create Game" button. 
 
 For testing on one's own, click Join Game. You are now player one and two.
 
-To play against a friend. Have them deploy the app and copy paste the address of your current game into the join game by address field.
+To play against a friend. Have them enter the address under your "Current Game" into the "Load Game from Address" field.
 
 Play the game by clicking the square you want on your turn, submit the transaction. The square will update as soon as the transaction clears.
