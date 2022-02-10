@@ -199,56 +199,60 @@ export const NewPage: FC = () => {
 
     return (
         <div className={styles.root}>
-            <div>
-                <WalletMultiButton />
-                <WalletDisconnectButton />
+            <div className={styles.main}>
+                <div>
+                    <WalletMultiButton />
+                    <WalletDisconnectButton />
+                </div>
+                <div>
+                    <button disabled={!providerMut} onClick={setupGame}>
+                        Create Game
+                    </button>
+                    <button disabled={!providerMut} onClick={joinGame}>
+                        Join Game
+                    </button>
+                    <button onClick={getBoardData}>
+                        Fetch Current Board
+                    </button>
+                </div>
+                <form onSubmit={handleSearchSubmit}>
+                <label>
+                    Search Games By Player Address:
+                    <input type="text" value={walletInput} onChange={updateWalletInput} />
+                </label>
+                <input type="submit" value="Submit" />
+                </form>
+                <form onSubmit={handleTurnSubmit}>
+                <label>
+                    Play Turn:
+                    <input type="text" value={turnInput} onChange={updateTurnInput} />
+                </label>
+                <input type="submit" value="Submit" />
+                </form>
+                <ul>
+                {setupGameList &&
+                    <GameList
+                    title="Setup Games:"
+                    onClick={getListItem}
+                    gameAccounts={setupGameList}
+                    />}
+                {joinedGameList &&
+                    <GameList
+                    title="Joined Games:"
+                    onClick={getListItem}
+                    gameAccounts={joinedGameList}/>}
+                </ul>
+                <div>
+                    Current Game: {myGame}
+                </div>
+                <div className={styles.game}>
+                    {gameBoard && 
+                    <Board
+                        title="My Game"
+                        onClick={getListItem}
+                        board={gameBoard}/>}
+                </div>
             </div>
-            <div>
-                <button disabled={!providerMut} onClick={setupGame}>
-                    Create Game
-                </button>
-                <button disabled={!providerMut} onClick={joinGame}>
-                    Join Game
-                </button>
-                <button onClick={getBoardData}>
-                    Fetch Current Board
-                </button>
-            </div>
-            <form onSubmit={handleSearchSubmit}>
-              <label>
-                Search Games By Player Address:
-                <input type="text" value={walletInput} onChange={updateWalletInput} />
-              </label>
-              <input type="submit" value="Submit" />
-            </form>
-            <form onSubmit={handleTurnSubmit}>
-              <label>
-                Play Turn:
-                <input type="text" value={turnInput} onChange={updateTurnInput} />
-              </label>
-              <input type="submit" value="Submit" />
-            </form>
-            <ul>
-            {setupGameList &&
-                <GameList
-                title="Setup Games:"
-                onClick={getListItem}
-                gameAccounts={setupGameList}
-                />}
-            {joinedGameList &&
-                <GameList
-                title="Joined Games:"
-                onClick={getListItem}
-                gameAccounts={joinedGameList}/>}
-            </ul>
-            <div>
-                Current Game: {myGame}
-            </div>
-            {gameBoard && 
-              <Board
-                title="My Game"
-                onClick={getListItem}
-                board={gameBoard}/>}
         </div>
     );
 };

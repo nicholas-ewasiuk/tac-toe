@@ -1,4 +1,5 @@
 import React from 'react';
+import * as styles from './Board.module.css';
 
 type BoardProps = {
   title: string;
@@ -30,6 +31,7 @@ export const Board = ({title, onClick, board}: BoardProps) => {
     <ul
       title={title}
       onClick={onClick}
+      className={styles.row}
       >
        {boardItems}
     </ul>

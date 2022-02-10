@@ -1,5 +1,6 @@
 import { AccountInfo, ParsedAccountData, PublicKey } from '@solana/web3.js';
-import React, { useEffect } from 'react';
+import React from 'react';
+import * as styles from './GameList.module.css';
 
 type GameListProps = {
   title: string,
