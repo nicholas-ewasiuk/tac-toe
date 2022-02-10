@@ -1,13 +1,17 @@
 {
+    "name": "app",
+    "version": "1.0.0",
+    "source": "app/index.html",
+    "license": "GPL-3.0",
     "scripts": {
         "clean": "shx rm -rf app/dist .parcel-cache",
         "build-dev": "parcel build ./app/index.html --public-url ./",
-        "build": "yarn clean && parcel build ./app/index.html",
+        "build": "parcel build ./app/index.html --public-url ./",
         "start": "yarn clean && parcel ./app/index.html",
         "push-gh-pages": "push-dir --dir=dist --branch=gh-pages --cleanup --verbose"
     },
     "dependencies": {
-        "@project-serum/anchor": "^0.19.0",
+        "@project-serum/anchor": "^0.21.0",
         "@saberhq/anchor-contrib": "^1.12.41"
     },
     "devDependencies": {
