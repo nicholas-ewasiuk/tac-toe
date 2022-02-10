@@ -1,4 +1,11 @@
 {
+    "scripts": {
+        "clean": "shx rm -rf app/dist .parcel-cache",
+        "build-dev": "parcel build ./app/index.html --public-url ./",
+        "build": "yarn clean && parcel build ./app/index.html",
+        "start": "yarn clean && parcel ./app/index.html",
+        "push-gh-pages": "push-dir --dir=app/dist --branch=gh-pages --cleanup --verbose"
+    },
     "dependencies": {
         "@project-serum/anchor": "^0.19.0"
     },
