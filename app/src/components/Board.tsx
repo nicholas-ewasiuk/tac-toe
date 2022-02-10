@@ -21,7 +21,7 @@ export const Board = ({title, onClick, board}: BoardProps) => {
           <li
             key={index}
             >
-              {element ? JSON.stringify(element) : 1}
+              {element ? JSON.stringify(element).slice(2,3) : ""}
           </li>)}
         </ul>
     </li>

@@ -25,6 +25,10 @@
 }
 
 .row li ul li {
-  border-width: 0.1em;
+  display: flex;
+  border-width: 2px;
+  font-size: 96px;
   border-style: solid;
+  justify-content: center;
+  align-items: center;
 }
