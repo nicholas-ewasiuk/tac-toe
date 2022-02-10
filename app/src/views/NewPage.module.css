@@ -24,16 +24,11 @@
 }
 
 .side {
-    display: flex;
-    flex-direction: column;
+    margin-left: 2em;
 }
 
 .top {
     align-self: flex-end;
-}
-
-.summary {
-    flex: 1;
 }
 
 .bottom {
@@ -41,24 +36,13 @@
     align-self: center;
 }
 
-.board {
-    color: #424242;
-    background: #26a69a;
-    border: 4px solid #00897b;
-    float: left;
-    font-size: 96px;
-    font-weight: bold;
-    line-height: 136px;
-    height: 136px;
-    margin-right: -1px;
-    margin-top: -1px;
-    padding: 0;
-    text-align: center;
-    width: 136px;
+.player {
+    margin: 1em 0 0 0;
 }
 
-
-
+.player button {
+    margin: 0 0 0 1em;
+}
 
 @media (max-width: 767px) {
     .root {

@@ -16,11 +16,9 @@ import { Board } from '../components/Board';
 
 export const NewPage: FC = () => {
     const [ currentGame, setCurrentGame ] = useState<PublicKey | null>(null);
-    const [ myGame, setMyGame ] = useState<string | null>(null);
+    const [ gameInput, setGameInput ] = useState<string>("");
     const [ playerOne, setPlayerOne ] = useState<PublicKey | null>(null);
     const [ playerTwo, setPlayerTwo ] = useState<PublicKey | null>(null);
-    const [ walletInput, setWalletInput ] = useState<string>('');
-    const [ turnInput, setTurnInput ] = useState<string>('');
     const [ setupGameList, setSetupGameList ] = useState<{
         pubkey: PublicKey;
         account: AccountInfo<Buffer | ParsedAccountData>;
@@ -31,9 +29,6 @@ export const NewPage: FC = () => {
         account: AccountInfo<Buffer | ParsedAccountData>;
       }[] | null>(null);
     const [ gameBoard, setGameBoard ] = useState<[][] | null>(null);
-
-    const preflightCommitment = 'processed'; // Move these
-    const commitment = 'processed';          // later.
 
     const { providerMut, network, connection, setNetwork } = useSolana();
     const wallet = useConnectedWallet();
@@ -68,6 +63,7 @@ export const NewPage: FC = () => {
                 signers: [gameKeypair]
             });
             searchGamesByPlayer(wallet.publicKey.toString());
+            getBoardData();
         }
     }
 
@@ -175,23 +171,37 @@ export const NewPage: FC = () => {
         setJoinedGameList(joinedGames);
     }
 
-    const updateWalletInput: ChangeEventHandler<HTMLInputElement> = async (event) => {
+    const updateGameInput: ChangeEventHandler<HTMLInputElement> = async (event) => {
         if (event.target) {
-          setWalletInput(event.target.value);
+          setGameInput(event.target.value);
+        }
+    }
+
+    const handleGameSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
+        event.preventDefault();
+        try {
+            const address = new PublicKey(gameInput);
+            setCurrentGame(address);
+        } catch (e) {
+            console.log(e);
         }
     }
 
     const handleTurnSubmit: MouseEventHandler<Element> = async (event) => {
         event.preventDefault();
         const target = event.target;
-        console.log(target);
-        const jsonStr = turnInput.replace(/(\w+:)|(\w+ :)/g, function(matchedStr) {
-            return '"' + matchedStr.substring(0, matchedStr.length - 1) + '":';
-          });
-        const turn = JSON.parse(jsonStr) as {row: number, column: number};
-        console.log('A name was submitted: ' + turn);
-        await playTurn(turn);
-        getBoardData();
+        if (target instanceof HTMLLIElement && target.value) {
+            const row = target.parentNode.parentNode.value;
+            const column = target.value;
+            const turnInput = `{row: ${row}, column: ${column}}`
+            const jsonStr = turnInput.replace(/(\w+:)|(\w+ :)/g, function(matchedStr) {
+                return '"' + matchedStr.substring(0, matchedStr.length - 1) + '":';
+            });
+            const turn = JSON.parse(jsonStr) as {row: number, column: number};
+            console.log('A name was submitted: ' + JSON.stringify(turn));
+            await playTurn(turn);
+            getBoardData();
+        }
     }
 
     const getListItem: MouseEventHandler<Element> = (event) => {
@@ -200,7 +210,6 @@ export const NewPage: FC = () => {
             try {
                 const address = new PublicKey(target.textContent);
                 setCurrentGame(address);
-                setMyGame(target.textContent);
             } catch (e) {
                 console.log(e);
             }
@@ -212,7 +221,7 @@ export const NewPage: FC = () => {
             <div className={styles.main}>
                 <div className={styles.game}>
                     <div>
-                        Current Game: {myGame}
+                        Current Game: {currentGame?.toString()}
                     </div>
                     {gameBoard && 
                     <Board
@@ -220,10 +229,10 @@ export const NewPage: FC = () => {
                         onClick={handleTurnSubmit}
                         board={gameBoard}/>}
                 </div>
-                <div>
+                <div className={styles.side}>
                     <WalletMultiButton />
                     <WalletDisconnectButton />
-                    <div className="player-button">
+                    <div className={styles.player}>
                         Player One:
                         {playerOne 
                             ? playerOne.toString() 
@@ -235,7 +244,7 @@ export const NewPage: FC = () => {
                             </button>
                         }
                     </div>
-                    <div className="player-button">
+                    <div className={styles.player}>
                     Player Two:
                         {playerTwo 
                             ? playerTwo.toString() 
@@ -260,6 +269,13 @@ export const NewPage: FC = () => {
                         onClick={getListItem}
                         gameAccounts={joinedGameList}/>}
                     </ul>
+                    <form onSubmit={handleGameSubmit}>
+                      <label>
+                        Load Game From Address:
+                        <input type="text" value={gameInput} onChange={updateGameInput} />
+                      </label>
+                      <input type="submit" value="Submit" />
+                    </form>
                 </div>
             </div>
         </div>

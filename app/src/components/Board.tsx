@@ -11,16 +11,16 @@ type BoardProps = {
 
 export const Board = ({title, onClick, board}: BoardProps) => {
 
-  
   const boardItems = board.map((row: JSX.Element[], index) => 
     <li
       key={index}
+      value={index}
       >
         <ul key={index}>
         {row.map((element: JSX.Element, index) => 
           <li
             key={index}
-            value={element ? JSON.stringify(element) : ""}
+            value={index}
             >
               {element ? JSON.stringify(element).slice(2,3) : ""}
           </li>)}
