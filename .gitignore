@@ -4,3 +4,11 @@ test-ledger/
 target
 **/*.rs.bk
 node_modules
+.idea
+.vscode
+
+.parcel-cache
+.vercel
+
+dist
+docs

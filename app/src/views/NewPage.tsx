@@ -1,17 +1,17 @@
 import React, { ChangeEventHandler, FC, useState, FormEventHandler, MouseEventHandler, useEffect } from 'react';
-import {  Program, ProgramAccount, Idl } from '@project-serum/anchor';
-import { AccountInfo, Commitment, Keypair, ParsedAccountData, PublicKey, Struct, SystemProgram } from '@solana/web3.js';
-import { newProgram, buildCoderMap, SuperCoder, AnchorTypes } from '@saberhq/anchor-contrib';
+import {  Program, Idl } from '@project-serum/anchor';
+import { AccountInfo, Keypair, ParsedAccountData, PublicKey, Struct, SystemProgram } from '@solana/web3.js';
+import { newProgram, SuperCoder } from '@saberhq/anchor-contrib';
 import { useSolana, useConnectedWallet } from '@saberhq/use-solana';
 import { WalletDisconnectButton, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { Buffer } from 'buffer';
 
 import * as styles from './NewPage.module.css';
 
-import { TIC_TAC_TOE_ID } from '../../utils/constants';
-import { ticTacToeIdl } from '../../utils/ticTacToeIdl';
-import { GameList } from '../sections/GameList';
-import { Board } from '../sections/Board';
+import { TIC_TAC_TOE_ID } from '../utils/constants';
+import { ticTacToeIdl } from '../utils/ticTacToeIdl';
+import { GameList } from '../components/GameList';
+import { Board } from '../components/Board';
 
 
 export const NewPage: FC = () => {
@@ -30,10 +30,6 @@ export const NewPage: FC = () => {
         account: AccountInfo<Buffer | ParsedAccountData>;
       }[] | null>(null);
     const [ gameBoard, setGameBoard ] = useState<[][] | null>(null);
-    const [ plantList, setPlantList ] = useState<{
-        pubkey: PublicKey;
-        account: AccountInfo<Buffer>;
-      }[] | null>(null);
 
     const preflightCommitment = 'processed'; // Move these
     const commitment = 'processed';          // later.
@@ -253,11 +249,6 @@ export const NewPage: FC = () => {
                 title="My Game"
                 onClick={getListItem}
                 board={gameBoard}/>}
-            {plantList && 
-              <GameList
-                title="plants"
-                onClick={getListItem}
-                gameAccounts={plantList}/>}
         </div>
     );
 };
