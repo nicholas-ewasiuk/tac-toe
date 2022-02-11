@@ -1,15 +1,5 @@
 # tictactoe-ui
-Basic front-end for the Project Serum Anchor Book tic-tac-toe example. 
-
-## Deploying and testing the Anchor program
-
-Install the Anchor dependencies.
-
-Follow the <a href="https://project-serum.github.io/anchor/getting-started/installation.html#install-rust">guide</a> here.
-
-Run `anchor test`
-
-Follow the <a href="https://book.anchor-lang.com/chapter_3/milestone_project_tic-tac-toe.html">guide</a> at the bottom of the page here to deploy on "devnet".
+Basic front-end for the Project Serum <a href="https://book.anchor-lang.com/">Anchor Book</a> tic-tac-toe example. 
 
 ## Running the app
 
@@ -39,3 +29,14 @@ For testing on one's own, click Join Game. You are now player one and two.
 To play against a friend. Have them enter the address under your "Current Game" into the "Load Game from Address" field.
 
 Play the game by clicking the square you want on your turn, submit the transaction. The square will update as soon as the transaction clears.
+
+## Deploying and testing the Anchor program
+
+Install the Anchor dependencies.
+
+Follow the <a href="https://project-serum.github.io/anchor/getting-started/installation.html#install-rust">guide</a> here.
+
+Run `anchor test`
+
+Follow the <a href="https://book.anchor-lang.com/chapter_3/milestone_project_tic-tac-toe.html">guide</a> at the bottom of the page here to deploy on "devnet".
+
