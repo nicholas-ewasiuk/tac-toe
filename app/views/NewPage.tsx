@@ -223,6 +223,7 @@ export const NewPage: FC = () => {
             try {
                 const address = new PublicKey(target.textContent);
                 setCurrentGame(address);
+                getBoardData();
             } catch (e) {
                 console.log(e);
             }
