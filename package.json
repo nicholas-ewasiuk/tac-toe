@@ -1,5 +1,5 @@
 {
-    "name": "app",
+    "name": "tac-toe",
     "version": "1.0.0",
     "source": "app/index.html",
     "license": "GPL-3.0",
@@ -19,6 +19,7 @@
         "chai": "^4.3.4",
         "mocha": "^9.0.3",
         "parcel": "^2.2.1",
+        "shx": "^0.3.4",
         "ts-mocha": "^9.0.2",
         "typescript": "^4.5.5"
     },
