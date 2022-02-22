@@ -1,4 +1,4 @@
-# tictactoe-ui
+# tac-toe
 Basic front-end for the Project Serum <a href="https://book.anchor-lang.com/">Anchor Book</a> tic-tac-toe example. 
 
 ## Running the app
@@ -6,8 +6,8 @@ Basic front-end for the Project Serum <a href="https://book.anchor-lang.com/">An
 Clone the repo, and run `yarn start`.
 
 ```bash
-$ git clone https://github.com/nicholas-ewasiuk/tictactoe-ui.git
-$ cd tictactoe-ui/app
+$ git clone https://github.com/nicholas-ewasiuk/tac-toe.git
+$ cd tac-toe/app
 $ yarn install
 $ yarn start
 ```
