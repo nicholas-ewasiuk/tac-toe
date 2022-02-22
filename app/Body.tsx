@@ -1,21 +1,22 @@
+/** @jsxImportSource @emotion/react */
 import React, { useCallback, ChangeEventHandler, FC, useState, FormEventHandler, MouseEventHandler, useEffect } from 'react';
 import {  Program, Idl } from '@project-serum/anchor';
-import { AccountInfo, Keypair, LAMPORTS_PER_SOL, ParsedAccountData, PublicKey, Struct, SystemProgram } from '@solana/web3.js';
+import { AccountInfo, Keypair, LAMPORTS_PER_SOL, ParsedAccountData, PublicKey, SystemProgram } from '@solana/web3.js';
 import { newProgram, SuperCoder } from '@saberhq/anchor-contrib';
 import { PendingTransaction } from '@saberhq/solana-contrib';
 import { useSolana, useConnectedWallet } from '@saberhq/use-solana';
-import { WalletDisconnectButton, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { Buffer } from 'buffer';
 
-import * as styles from './NewPage.module.css';
+import { TIC_TAC_TOE_ID } from './utils/constants';
+import { ticTacToeIdl } from './utils/ticTacToeIdl';
+import { GameList } from './components/GameList';
+import { Board } from './components/Board';
+import { ConnectWalletButton } from '@gokiprotocol/walletkit';
+import { css } from "@emotion/react";
+import styled from '@emotion/styled';
 
-import { TIC_TAC_TOE_ID } from '../utils/constants';
-import { ticTacToeIdl } from '../utils/ticTacToeIdl';
-import { GameList } from '../components/GameList';
-import { Board } from '../components/Board';
 
-
-export const NewPage: FC = () => {
+export const Body: FC = () => {
     const [ balance, setBalance ] = useState<number | null>(null);
     const [ currentGame, setCurrentGame ] = useState<PublicKey | null>(null);
     const [ gameInput, setGameInput ] = useState<string>("");
@@ -32,12 +33,14 @@ export const NewPage: FC = () => {
       }[] | null>(null);
     const [ gameBoard, setGameBoard ] = useState<[][] | null>(null);
 
-    const { providerMut, network, connection, setNetwork } = useSolana();
+    const { providerMut, network, connection } = useSolana();
     const wallet = useConnectedWallet();
 
-    useEffect(() => {
-        setNetwork("devnet");
-    },[])
+    const refetchSOL = useCallback(async () => {
+        if (wallet && providerMut) {
+          setBalance(await providerMut.connection.getBalance(wallet.publicKey));
+        }
+      }, [providerMut, wallet]);
 
     useEffect(() => {
         if (wallet) {
@@ -45,12 +48,6 @@ export const NewPage: FC = () => {
             getBoardData();
         }
     },[wallet, currentGame])
-
-    const refetchSOL = useCallback(async () => {
-        if (wallet && providerMut) {
-          setBalance(await providerMut.connection.getBalance(wallet.publicKey));
-        }
-      }, [providerMut, wallet]);
 
     useEffect(() => {
         void refetchSOL();
@@ -179,7 +176,6 @@ export const NewPage: FC = () => {
                 `-- Game Address ${i + 1}: ${account.pubkey.toString()}`
             );
         });
-        console.log(setupGames);
         setSetupGameList(setupGames);
         setJoinedGameList(joinedGames);
     }
@@ -231,91 +227,108 @@ export const NewPage: FC = () => {
     }
 
     return (
-        <div className={styles.root}>
-            <div className={styles.main}>
-                <div className={styles.game}>
-                    <div>
-                        Current Game: {currentGame?.toString()}
-                    </div>
-                    {gameBoard && 
-                    <Board
-                        title="My Game"
-                        onClick={handleTurnSubmit}
-                        board={gameBoard}/>}
-                </div>
-                <div className={styles.side}>
-                    <WalletMultiButton />
-                    <WalletDisconnectButton />
-                    <div className={styles.player}>
-                        Player One: 
-                        {playerOne 
-                            ? playerOne.toString() 
-                            : <button 
-                                disabled={!providerMut} 
-                                onClick={setupGame}
-                                >
-                                    Create Game
-                            </button>
-                        }
-                    </div>
-                    <div className={styles.player}>
-                    Player Two:
-                        {playerTwo 
-                            ? playerTwo.toString() 
-                            : <button 
-                                disabled={!providerMut} 
-                                onClick={joinGame}
-                                >
-                                    Join Game
-                            </button>
-                        }
-                    </div>
-                    <ul>
-                    {setupGameList &&
-                        <GameList
-                        title="Games Created:"
-                        onClick={getListItem}
-                        gameAccounts={setupGameList}
-                        />}
-                    {joinedGameList &&
-                        <GameList
-                        title="Games Joined:"
-                        onClick={getListItem}
-                        gameAccounts={joinedGameList}/>}
-                    </ul>
-                    <form onSubmit={handleGameSubmit}>
-                      <label>
-                        Load Game From Address:
-                        <input type="text" value={gameInput} onChange={updateGameInput} />
-                      </label>
-                      <input type="submit" value="Submit" />
-                    </form>
-                    <div className={styles.airdrop}>
-                        <div>
-                            Balance:{" "}
-                            {typeof balance === "number"
-                                ? `${(balance / LAMPORTS_PER_SOL).toLocaleString()} SOL`
-                                : "--"} 
-                        </div>
-                        <button 
-                        disabled={!providerMut}
-                        onClick={async () => {
-                            const txSig = await connection.requestAirdrop(
-                                providerMut.wallet.publicKey,
-                                LAMPORTS_PER_SOL
-                            );
-                            await new PendingTransaction(
-                                providerMut.connection,
-                                txSig
-                            ).wait();
-                            await refetchSOL();
-                        }}
-                        >
-                            Request 1 SOL
+        <AppWrapper>
+            <section>
+                <p>
+                    Current Game: {currentGame?.toString()}
+                </p>
+                {gameBoard && 
+                <Board
+                    title="My Game"
+                    onClick={handleTurnSubmit}
+                    board={gameBoard}/>}
+            </section>
+            <Side>
+                <ConnectWalletButton />
+                <div css={css`margin: 1em 0 0 0;`}>
+                    Player One: 
+                    {playerOne 
+                        ? playerOne.toString() 
+                        : <button 
+                            css={css`margin: 0 0 0 1em;`}
+                            disabled={!providerMut} 
+                            onClick={setupGame}
+                            >
+                                Create Game
                         </button>
-                    </div>
+                    }
                 </div>
-            </div>
-        </div>
+                <div css={css`margin: 1em 0 0 0;`}>
+                Player Two:
+                    {playerTwo 
+                        ? playerTwo.toString() 
+                        : <button 
+                            css={css`margin: 0 0 0 1em;`}
+                            disabled={!providerMut} 
+                            onClick={joinGame}
+                            >
+                                Join Game
+                        </button>
+                    }
+                </div>
+                <ul>
+                {setupGameList &&
+                    <GameList
+                    title="Games Created:"
+                    onClick={getListItem}
+                    gameAccounts={setupGameList}
+                    />}
+                {joinedGameList &&
+                    <GameList
+                    title="Games Joined:"
+                    onClick={getListItem}
+                    gameAccounts={joinedGameList}/>}
+                </ul>
+                <form onSubmit={handleGameSubmit}>
+                    <label>
+                    Load Game From Address:
+                    <input type="text" value={gameInput} onChange={updateGameInput} />
+                    </label>
+                    <input type="submit" value="Submit" />
+                </form>
+                <div 
+                    css={css`
+                        display: flex;
+                        flex-direction: row;
+                        margin: 2em 0 0 0;
+                    `}
+                >
+                    <div>
+                        Balance:{" "}
+                        {typeof balance === "number"
+                            ? `${(balance / LAMPORTS_PER_SOL).toLocaleString()} SOL`
+                            : "--"} 
+                    </div>
+                    <button 
+                    disabled={!providerMut}
+                    onClick={async () => {
+                        const txSig = await connection.requestAirdrop(
+                            providerMut.wallet.publicKey,
+                            LAMPORTS_PER_SOL
+                        );
+                        await new PendingTransaction(
+                            providerMut.connection,
+                            txSig
+                        ).wait();
+                        await refetchSOL();
+                    }}
+                    >
+                        Request 1 SOL
+                    </button>
+                </div>
+            </Side>
+        </AppWrapper>
     );
 };
+
+const AppWrapper = styled.div`
+    min-height: 100vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+`;
+
+const Side = styled.div`
+    width: 420px;
+    margin-left: 2em;
+`;

@@ -1,8 +1,17 @@
 import React from 'react';
-import { Router } from './Router';
+import { WalletKitProvider } from '@gokiprotocol/walletkit';
+import { Body } from './Body';
 
 function App() {
-  return <Router />;
+  return (
+    <WalletKitProvider
+      defaultNetwork='devnet'
+      app={{
+        name: 'tic-tac-toe',
+      }}>
+      <Body />
+    </WalletKitProvider>
+  )
 }
 
 export default App;

@@ -1,5 +1,5 @@
 import React from 'react';
-import * as styles from './Board.module.css';
+import styled from '@emotion/styled';
 
 type BoardProps = {
   title: string;
@@ -16,25 +16,55 @@ export const Board = ({title, onClick, board}: BoardProps) => {
       key={index}
       value={index}
       >
-        <ul key={index}>
+        <Row key={index}>
         {row.map((element: JSX.Element, index) => 
-          <li
+          <Square
             key={index}
             value={index}
             >
-              {element ? JSON.stringify(element).slice(2,3) : ""}
-          </li>)}
-        </ul>
+              {element ? JSON.stringify(element).slice(2,3) : "\u0000"}
+          </Square>)}
+        </Row>
     </li>
   );
 
   return (
-    <ul
+    <BoardLayout
       title={title}
       onClick={onClick}
-      className={styles.row}
       >
        {boardItems}
-    </ul>
+    </BoardLayout>
   )
 }
+
+const BoardLayout = styled.ul`
+  display: block;
+  margin: 20px 4px 20px 4px;
+  padding: 0px;
+  width: 450px;
+  height: 450px;
+  list-style-type: none;
+`;
+
+const Row = styled.ul`
+  display: flex;
+  flex-direction: row;
+  padding: 0px;
+  list-style-type: none;
+`
+
+const Square = styled.li`
+  display: flex;
+  border-width: 2px;
+  font-size: 96px;
+  border-style: solid;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0px;
+  &:hover {
+    background-color: grey;
+  }
+`;

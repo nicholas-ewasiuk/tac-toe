@@ -9,38 +9,6 @@ body {
     font-weight: 300;
 }
 
-html.light {
-    background: #eff2f3;
-    color: #2a2a2a;
-}
-
-html.dark {
-    background: #2a2a2a;
-    color: #eef5f6;
-}
-
-ul {
-    list-style-type: none;
-}
-
-html.light button {
-    color: #2a2a2a;
-}
-
-html.dark button {
-    color: #eef5f6;
-}
-
 #app {
     min-height: 100vh;
-}
-
-html body .wallet-adapter-modal {
-    overflow-y: initial;
-}
-
-html body .wallet-adapter-modal-container {
-    justify-content: flex-end;
-    align-items: flex-start;
-    margin: 24px;
 }

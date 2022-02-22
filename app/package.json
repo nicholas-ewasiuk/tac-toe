@@ -11,6 +11,9 @@
     "push-gh-pages": "push-dir --dir=dist --branch=gh-pages --cleanup --verbose"
   },
   "dependencies": {
+    "@emotion/react": "^11.8.1",
+    "@emotion/styled": "^11.8.1",
+    "@gokiprotocol/walletkit": "^1.6.4",
     "@project-serum/anchor": "0.20",
     "@saberhq/anchor-contrib": "^1.12.41",
     "@saberhq/solana-contrib": "^1.12.41",
