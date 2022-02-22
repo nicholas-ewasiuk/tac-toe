@@ -7,7 +7,7 @@ Clone the repo, and run `yarn start`.
 
 ```bash
 $ git clone https://github.com/nicholas-ewasiuk/tac-toe.git
-$ cd tac-toe/
+$ cd tac-toe/app
 $ yarn install
 $ yarn start
 ```
