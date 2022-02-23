@@ -58,6 +58,7 @@ const Square = styled.li`
   display: flex;
   border-width: 2px;
   font-size: 96px;
+  font-family: 'DotGothic16', sans-serif;
   border-style: solid;
   justify-content: center;
   align-items: center;
