@@ -6,6 +6,7 @@ import { newProgram, SuperCoder } from '@saberhq/anchor-contrib';
 import { PendingTransaction } from '@saberhq/solana-contrib';
 import { useSolana, useConnectedWallet } from '@saberhq/use-solana';
 import { Buffer } from 'buffer';
+import { Nav } from './components/Nav';
 
 import { TIC_TAC_TOE_ID } from './utils/constants';
 import { ticTacToeIdl } from './utils/ticTacToeIdl';
@@ -239,7 +240,7 @@ export const Body: FC = () => {
                     board={gameBoard}/>}
             </section>
             <Side>
-                <ConnectWalletButton />
+                <Nav />
                 <div css={css`margin: 1em 0 0 0;`}>
                     Player One: 
                     {playerOne 

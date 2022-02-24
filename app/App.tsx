@@ -1,7 +1,8 @@
 import React from 'react';
 import { WalletKitProvider } from '@gokiprotocol/walletkit';
-import { Body } from './Body';
+
 import { Router } from './Router';
+import { Nav } from './components/Nav';
 
 export const BREAKPOINT_SIZES = [576, 780, 992, 1200] as const;
 

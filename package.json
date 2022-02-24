@@ -11,7 +11,8 @@
         "push-gh-pages": "push-dir --dir=dist --branch=gh-pages --cleanup --verbose"
     },
     "dependencies": {
-        "@project-serum/anchor": "0.20"
+        "@project-serum/anchor": "0.20",
+        "@solana/spl-token": "^0.2.0"
     },
     "devDependencies": {
         "@types/chai": "^4.3.0",

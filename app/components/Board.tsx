@@ -7,8 +7,6 @@ type BoardProps = {
   board: [][];
 };
 
-
-
 export const Board = ({title, onClick, board}: BoardProps) => {
 
   const boardItems = board.map((row: JSX.Element[], index) => 
