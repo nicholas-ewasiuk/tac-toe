@@ -1,30 +1,29 @@
 import { ConnectedWallet } from '@saberhq/use-solana';
 import { newProgram } from '@saberhq/anchor-contrib';
 import { AugmentedProvider } from '@saberhq/solana-contrib';
-import { Keypair, PublicKey, SystemProgram } from '@solana/web3.js';
+import { PublicKey } from '@solana/web3.js';
 import { Idl, Program } from '@project-serum/anchor';
 
 import { TIC_TAC_TOE_ID } from '../utils/constants';
 import { ticTacToeIdl } from '../utils/ticTacToeIdl';
 
-export async function setupGame(
+export async function playTurn(
   provider: AugmentedProvider,
   wallet: ConnectedWallet, 
+  address: PublicKey,
+  tile: {row: number, column: number},
   IDL: Idl = ticTacToeIdl,
   programId: PublicKey = TIC_TAC_TOE_ID,
 ) {
   const program = newProgram<Program>(IDL, programId, provider);
   const player = wallet;
-  const gameKeypair = Keypair.generate();
 
   try {
-    await program.rpc.setupGame({
+    await program.rpc.play(tile, {
       accounts: {
-        game: gameKeypair.publicKey,
-        playerOne: player.publicKey,
-        systemProgram: SystemProgram.programId
-      },
-      signers: [gameKeypair]
+          game: address,
+          player: player.publicKey,
+      }
     });
   } catch (e) {
     console.log(e);

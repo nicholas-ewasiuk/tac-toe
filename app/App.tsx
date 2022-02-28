@@ -3,6 +3,7 @@ import { WalletKitProvider } from '@gokiprotocol/walletkit';
 
 import { Router } from './Router';
 import { Nav } from './components/Nav';
+import { Body } from './Body';
 
 export const BREAKPOINT_SIZES = [576, 780, 992, 1200] as const;
 
@@ -23,7 +24,7 @@ const App: React.FC = () => {
       app={{
         name: 'tic-tac-toe',
       }}>
-      <Router />
+      <Body />
     </WalletKitProvider>
   );
 };

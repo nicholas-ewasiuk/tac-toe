@@ -1,20 +1,20 @@
 /** @jsxImportSource @emotion/react */
-import React, { useCallback, ChangeEventHandler, FC, useState, FormEventHandler, MouseEventHandler, useEffect } from 'react';
-import {  Program, Idl } from '@project-serum/anchor';
-import { AccountInfo, Keypair, LAMPORTS_PER_SOL, ParsedAccountData, PublicKey, SystemProgram } from '@solana/web3.js';
-import { newProgram, SuperCoder } from '@saberhq/anchor-contrib';
+import { useCallback, ChangeEventHandler, FC, useState, FormEventHandler, MouseEventHandler, useEffect } from 'react';
+import { AccountInfo, LAMPORTS_PER_SOL, ParsedAccountData, PublicKey, SystemProgram } from '@solana/web3.js';
 import { PendingTransaction } from '@saberhq/solana-contrib';
 import { useSolana, useConnectedWallet } from '@saberhq/use-solana';
 import { Buffer } from 'buffer';
 import { Nav } from './components/Nav';
 
 import { TIC_TAC_TOE_ID } from './utils/constants';
-import { ticTacToeIdl } from './utils/ticTacToeIdl';
 import { GameList } from './components/GameList';
 import { Board } from './components/Board';
-import { ConnectWalletButton } from '@gokiprotocol/walletkit';
 import { css } from "@emotion/react";
 import styled from '@emotion/styled';
+import { setupGame } from './actions/setupGame';
+import { getGame } from './state/Game';
+import { joinGame } from './actions/joinGame';
+import { playTurn } from './actions/playTurn';
 
 
 export const Body: FC = () => {
@@ -55,86 +55,38 @@ export const Body: FC = () => {
       }, [refetchSOL]);
 
 
-    const setupGame = async () => {
+    const handleSetupGame = async () => {
         if (wallet && providerMut) {
-            const program = newProgram<Program>(ticTacToeIdl, TIC_TAC_TOE_ID, providerMut);
-            const player = wallet;
-            const gameKeypair = Keypair.generate();
-
-            setCurrentGame(gameKeypair.publicKey);
-
-            console.log(`loading program at ${program.programId} on network ${network}`);
-
-            await program.rpc.setupGame({
-                accounts: {
-                    game: gameKeypair.publicKey,
-                    playerOne: player.publicKey,
-                    systemProgram: SystemProgram.programId
-                },
-                signers: [gameKeypair]
-            });
+            setupGame(providerMut, wallet);
             searchGamesByPlayer(wallet.publicKey.toString());
             getBoardData();
         }
     }
 
-    const joinGame = async () => {
+    const handleJoinGame = async () => {
         if (wallet && providerMut && currentGame) {
-            const program = newProgram<Program>(ticTacToeIdl, TIC_TAC_TOE_ID, providerMut);
-            const player = wallet;
-
-            console.log(`joining game at address ${currentGame}`);
-
-            await program.rpc.playerJoin({
-                accounts: {
-                    game: currentGame,
-                    playerTwo: player.publicKey,
-                }
-            });
+            joinGame(providerMut, wallet, currentGame);
             searchGamesByPlayer(wallet.publicKey.toString());
             getBoardData();
         }
 
-    }
-
-    const playTurn = async (tile: {row: number, column: number}) => {
-        if (wallet && providerMut && currentGame) {
-            const program = newProgram<Program>(ticTacToeIdl, TIC_TAC_TOE_ID, providerMut);
-            const player = wallet;
-
-            await program.rpc.play(tile, {
-                accounts: {
-                    game: currentGame,
-                    player: player.publicKey,
-                }
-            });
-        }
-    }
-
-    const getAccountData = async (account: PublicKey, programId: PublicKey, idl: Idl) => {
-        if (account instanceof PublicKey) {
-            const accountInfo = await connection.getAccountInfo(account);
-            if (accountInfo) {
-                return new SuperCoder(programId, idl).coder.accounts.decode("Game", accountInfo.data)
-            }
-        }
     }
 
     const getBoardData = async () => {
-        if (currentGame) {
-            const game = await getAccountData(currentGame, TIC_TAC_TOE_ID, ticTacToeIdl);
-            console.log(game);
-            setGameBoard(game.board);
-            if (game.players[0]) {
-                setPlayerOne(game.players[0]);
+        if (currentGame && providerMut) {
+            const { board, players } = await getGame(providerMut, connection, currentGame);
+            setGameBoard(board);
+            if (players[0]) {
+                setPlayerOne(players[0]);
             }
-            if (game.players[1] && game.players[1].toString() !== "11111111111111111111111111111111") {
-                setPlayerTwo(game.players[1]);
+            if (players[1] && players[1].toString() !== "11111111111111111111111111111111") {
+                setPlayerTwo(players[1]);
             }
         }
     }
 
     const searchGamesByPlayer = async (address: string) => {
+        console.clear();
         const setupGames = await connection.getParsedProgramAccounts(
             TIC_TAC_TOE_ID,
             {
@@ -207,10 +159,12 @@ export const Body: FC = () => {
             const jsonStr = turnInput.replace(/(\w+:)|(\w+ :)/g, function(matchedStr) {
                 return '"' + matchedStr.substring(0, matchedStr.length - 1) + '":';
             });
-            const turn = JSON.parse(jsonStr) as {row: number, column: number};
-            console.log('A name was submitted: ' + JSON.stringify(turn));
-            await playTurn(turn);
-            getBoardData();
+            const tile = JSON.parse(jsonStr) as {row: number, column: number};
+            console.log('A tile was submitted: ' + JSON.stringify(tile));
+            if (wallet && providerMut && currentGame) {
+                await playTurn(providerMut, wallet, currentGame, tile);
+                getBoardData();
+            }
         }
     }
 
@@ -248,7 +202,7 @@ export const Body: FC = () => {
                         : <button 
                             css={css`margin: 0 0 0 1em;`}
                             disabled={!providerMut} 
-                            onClick={setupGame}
+                            onClick={handleSetupGame}
                             >
                                 Create Game
                         </button>
@@ -261,7 +215,7 @@ export const Body: FC = () => {
                         : <button 
                             css={css`margin: 0 0 0 1em;`}
                             disabled={!providerMut} 
-                            onClick={joinGame}
+                            onClick={handleJoinGame}
                             >
                                 Join Game
                         </button>

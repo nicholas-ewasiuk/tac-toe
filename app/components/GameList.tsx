@@ -2,7 +2,7 @@ import { AccountInfo, ParsedAccountData, PublicKey } from '@solana/web3.js';
 import React from 'react';
 import * as styles from './GameList.module.css';
 
-type GameListProps = {
+type Props = {
   title: string,
   onClick: React.MouseEventHandler;
   gameAccounts: {
@@ -11,7 +11,7 @@ type GameListProps = {
   }[],
 };
 
-export const GameList = ({title, onClick, gameAccounts}: GameListProps) => {
+export const GameList = ({title, onClick, gameAccounts}: Props) => {
   
   const listItems = gameAccounts.map((account) => 
     <li 

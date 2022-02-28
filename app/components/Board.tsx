@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-type BoardProps = {
+type Props = {
   title: string;
   onClick: React.MouseEventHandler;
   board: [][];
 };
 
-export const Board = ({title, onClick, board}: BoardProps) => {
+export const Board = ({title, onClick, board}: Props) => {
 
   const boardItems = board.map((row: JSX.Element[], index) => 
     <li
