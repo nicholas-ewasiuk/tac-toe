@@ -46,7 +46,8 @@ export async function getGame(
   const program = newProgram<Program>(IDL, programId, provider);
 
   const gameAccount = await program.coder.accounts.decode("Game", info.data);
-
+  console.log(gameAccount);
+  
   return {
     address,
     players: gameAccount.players,

@@ -90,7 +90,7 @@ export const Body: FC = () => {
         const setupGames = await connection.getProgramAccounts(
             TIC_TAC_TOE_ID,
             {
-                dataSlice: { offset: 0, length: 0 },
+                dataSlice: { offset: 8, length: 64 },
                 filters: [
                     {
                         memcmp: {
@@ -104,7 +104,7 @@ export const Body: FC = () => {
         const joinedGames = await connection.getProgramAccounts(
             TIC_TAC_TOE_ID,
             {
-                dataSlice: { offset: 0, length: 0 },
+                dataSlice: { offset: 8, length: 64 },
                 filters: [
                     {
                         memcmp: {
@@ -131,9 +131,29 @@ export const Body: FC = () => {
                 `-- Game Address ${i + 1}: ${account.pubkey.toString()}`
             );
         });
-        console.log(setupGames)
-        setSetupGameList(setupGames);
-        setJoinedGameList(joinedGames);
+
+        const activeArray = [];
+        const createdArray = [];
+        for (let i = 0; i < setupGames.length; i++) {
+            for (let j = 32; j < 64; j++) {
+                if (setupGames[i].account.data[j] !== 0 ) {
+                    activeArray.push(setupGames[i]);
+                    break;
+                } else if (j === 63) {
+                    createdArray.push(setupGames[i]);
+                }
+            }
+        }
+        /* Figure out comparing object arrays.
+        for (let i = 0; i < joinedGames.length; i++) {
+            if (activeArray.indexOf(joinedGames[i]) === -1) {
+                activeArray.push(joinedGames[i]);
+            }
+        }
+        */
+
+        setSetupGameList(createdArray);
+        setJoinedGameList(activeArray);
     }
 
     const updateGameInput: ChangeEventHandler<HTMLInputElement> = async (event) => {
@@ -233,7 +253,7 @@ export const Body: FC = () => {
                     />}
                 {joinedGameList &&
                     <GameList
-                    title="Games Joined:"
+                    title="Active Games:"
                     onClick={getListItem}
                     gameAccounts={joinedGameList}/>}
                 </ul>
