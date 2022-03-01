@@ -6,13 +6,13 @@ import { useSolana, useConnectedWallet } from '@saberhq/use-solana';
 import { Buffer } from 'buffer';
 import { Nav } from './components/Nav';
 
-import { TIC_TAC_TOE_ID } from './utils/constants';
+import { TIC_TAC_TOE_ID } from './constants';
 import { GameList } from './components/GameList';
 import { Board } from './components/Board';
 import { css } from "@emotion/react";
 import styled from '@emotion/styled';
 import { setupGame } from './actions/setupGame';
-import { getGame } from './state/Game';
+import { getGame } from './state/game';
 import { joinGame } from './actions/joinGame';
 import { playTurn } from './actions/playTurn';
 
@@ -87,9 +87,10 @@ export const Body: FC = () => {
 
     const searchGamesByPlayer = async (address: string) => {
         console.clear();
-        const setupGames = await connection.getParsedProgramAccounts(
+        const setupGames = await connection.getProgramAccounts(
             TIC_TAC_TOE_ID,
             {
+                dataSlice: { offset: 0, length: 0 },
                 filters: [
                     {
                         memcmp: {
@@ -100,9 +101,10 @@ export const Body: FC = () => {
                 ]
             }
         )
-        const joinedGames = await connection.getParsedProgramAccounts(
+        const joinedGames = await connection.getProgramAccounts(
             TIC_TAC_TOE_ID,
             {
+                dataSlice: { offset: 0, length: 0 },
                 filters: [
                     {
                         memcmp: {
@@ -129,6 +131,7 @@ export const Body: FC = () => {
                 `-- Game Address ${i + 1}: ${account.pubkey.toString()}`
             );
         });
+        console.log(setupGames)
         setSetupGameList(setupGames);
         setJoinedGameList(joinedGames);
     }

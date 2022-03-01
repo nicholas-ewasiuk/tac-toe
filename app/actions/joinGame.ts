@@ -4,8 +4,8 @@ import { AugmentedProvider } from '@saberhq/solana-contrib';
 import { PublicKey } from '@solana/web3.js';
 import { Idl, Program } from '@project-serum/anchor';
 
-import { TIC_TAC_TOE_ID } from '../utils/constants';
-import { ticTacToeIdl } from '../utils/ticTacToeIdl';
+import { TIC_TAC_TOE_ID } from '../constants';
+import { ticTacToeIdl } from '../idl/ticTacToeIdl';
 
 export async function joinGame(
   provider: AugmentedProvider,

@@ -1,6 +1,6 @@
 import { Commitment, Connection, PublicKey } from "@solana/web3.js";
-import { TIC_TAC_TOE_ID } from "../utils/constants";
-import { ticTacToeIdl } from "../utils/ticTacToeIdl";
+import { TIC_TAC_TOE_ID } from "../constants";
+import { ticTacToeIdl } from "../idl/ticTacToeIdl";
 import { Idl, Program } from "@project-serum/anchor";
 import { AugmentedProvider } from "@saberhq/solana-contrib";
 import { newProgram } from "@saberhq/anchor-contrib";
