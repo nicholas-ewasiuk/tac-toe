@@ -5,13 +5,31 @@ import styled from '@emotion/styled';
 export const Nav = () => {
 
   return (
-    <nav>
+    <NavBar>
       <div>
-        <a href='/created'>Created</a>
-        <a href='/active'>Active</a>
-        <a href='/explore'>Explore</a>
+        <a href='/created'>
+          <button>
+            Created
+          </button>
+        </a>
+        <a href='/active'>
+          <button>
+            Active
+          </button>
+        </a>
+        <a href='/explore'>
+          <button>
+            Explore
+          </button>
+        </a>
       </div>
       <ConnectWalletButton />
-    </nav>
+    </NavBar>
   )
 }
+
+const NavBar = styled.ul`
+  display: flex;
+  flex-direction: row;
+
+`

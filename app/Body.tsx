@@ -86,7 +86,6 @@ export const Body: FC = () => {
     }
 
     const searchGamesByPlayer = async (address: string) => {
-        console.clear();
         const setupGames = await connection.getProgramAccounts(
             TIC_TAC_TOE_ID,
             {
@@ -115,23 +114,7 @@ export const Body: FC = () => {
                 ]
             }
         )
-        console.log(
-            `Found ${setupGames.length} games setup by this wallet ${address}: `
-        );
-        setupGames.forEach((account, i) => {
-            console.log(
-                `-- Game Address ${i + 1}: ${account.pubkey.toString()}`
-            );
-        });
-        console.log(
-            `Found ${joinedGames.length} games joined by this wallet ${address}: `
-        );
-        joinedGames.forEach((account, i) => {
-            console.log(
-                `-- Game Address ${i + 1}: ${account.pubkey.toString()}`
-            );
-        });
-
+        // Map created games waiting for P2, and active games for this user.
         const activeArray = [];
         const createdArray = [];
         for (let i = 0; i < setupGames.length; i++) {
@@ -144,14 +127,15 @@ export const Body: FC = () => {
                 }
             }
         }
-        /* Figure out comparing object arrays.
         for (let i = 0; i < joinedGames.length; i++) {
-            if (activeArray.indexOf(joinedGames[i]) === -1) {
-                activeArray.push(joinedGames[i]);
+            for (let j = 0; j < activeArray.length; j++) {
+                if (joinedGames[i].pubkey.toBase58() === activeArray[j].pubkey.toBase58()) {
+                    break;
+                } else if (j === (activeArray.length - 1)) {
+                    activeArray.push(joinedGames[i]);
+                }
             }
         }
-        */
-
         setSetupGameList(createdArray);
         setJoinedGameList(activeArray);
     }

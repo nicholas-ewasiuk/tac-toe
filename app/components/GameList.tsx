@@ -1,6 +1,5 @@
 import { AccountInfo, ParsedAccountData, PublicKey } from '@solana/web3.js';
 import React from 'react';
-import * as styles from './GameList.module.css';
 
 type Props = {
   title: string,

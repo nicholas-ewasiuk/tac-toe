@@ -1,14 +1,30 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { Nav } from '../components/Nav';
+import { useConnectedWallet, useSolana } from '@saberhq/use-solana';
+import { setupGame } from '../actions/setupGame';
+import { searchGames } from '../actions/searchGames';
 
 export const Home: React.FC = () => {
 
+  const { providerMut, network, connection } = useSolana();
+  const wallet = useConnectedWallet();
+
+  const handleSetupGame = async () => {
+    if (!providerMut || !wallet) throw new Error("Wallet not connected.")
+    //await setupGame(providerMut, wallet);
+    const { activeArray, createdArray } = await searchGames(connection, wallet.publicKey);
+    console.log(activeArray);
+    console.log(createdArray);
+  }
+
   return (
     <AppWrapper>
+      <Nav />
       <Buttons>
         <Button 
           disabled={!providerMut}
-          onClick={createGame}
+          onClick={handleSetupGame}
         >
           Create A Game
         </Button>
@@ -19,10 +35,9 @@ export const Home: React.FC = () => {
 };
 
 const AppWrapper = styled.div`
-  min-height: 100vh;
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Button = styled.button`

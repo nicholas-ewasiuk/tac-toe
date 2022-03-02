@@ -24,7 +24,7 @@ const App: React.FC = () => {
       app={{
         name: 'tic-tac-toe',
       }}>
-      <Body />
+      <Router />
     </WalletKitProvider>
   );
 };

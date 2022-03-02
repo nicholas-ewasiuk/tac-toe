@@ -11,7 +11,6 @@ import { Nav } from "./components/Nav";
 export const Router: FC = () => {
   return (
     <BrowserRouter>
-      <Nav />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/created" element={<Created />} />
