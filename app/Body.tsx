@@ -15,6 +15,7 @@ import { setupGame } from './actions/setupGame';
 import { getGame } from './state/game';
 import { joinGame } from './actions/joinGame';
 import { playTurn } from './actions/playTurn';
+import { searchGames } from './actions/searchGames';
 
 
 export const Body: FC = () => {
@@ -32,7 +33,7 @@ export const Body: FC = () => {
         pubkey: PublicKey;
         account: AccountInfo<Buffer | ParsedAccountData>;
       }[] | null>(null);
-    const [ gameBoard, setGameBoard ] = useState<[][] | null>(null);
+    const [ gameBoard, setGameBoard ] = useState([[null,null,null],[null,null,null],[null,null,null]]);
 
     const { providerMut, network, connection } = useSolana();
     const wallet = useConnectedWallet();
@@ -85,57 +86,9 @@ export const Body: FC = () => {
         }
     }
 
-    const searchGamesByPlayer = async (address: string) => {
-        const setupGames = await connection.getProgramAccounts(
-            TIC_TAC_TOE_ID,
-            {
-                dataSlice: { offset: 8, length: 64 },
-                filters: [
-                    {
-                        memcmp: {
-                            offset: 8,
-                            bytes: address,
-                        }
-                    }
-                ]
-            }
-        )
-        const joinedGames = await connection.getProgramAccounts(
-            TIC_TAC_TOE_ID,
-            {
-                dataSlice: { offset: 8, length: 64 },
-                filters: [
-                    {
-                        memcmp: {
-                            offset: 40,
-                            bytes: address,
-                        }
-                    }
-                ]
-            }
-        )
-        // Map created games waiting for P2, and active games for this user.
-        const activeArray = [];
-        const createdArray = [];
-        for (let i = 0; i < setupGames.length; i++) {
-            for (let j = 32; j < 64; j++) {
-                if (setupGames[i].account.data[j] !== 0 ) {
-                    activeArray.push(setupGames[i]);
-                    break;
-                } else if (j === 63) {
-                    createdArray.push(setupGames[i]);
-                }
-            }
-        }
-        for (let i = 0; i < joinedGames.length; i++) {
-            for (let j = 0; j < activeArray.length; j++) {
-                if (joinedGames[i].pubkey.toBase58() === activeArray[j].pubkey.toBase58()) {
-                    break;
-                } else if (j === (activeArray.length - 1)) {
-                    activeArray.push(joinedGames[i]);
-                }
-            }
-        }
+    const searchGamesByPlayer = async () => {
+        if (!providerMut || !wallet) throw new Error("Wallet not connected.")
+        const { activeArray, createdArray } = await searchGames(connection, wallet.publicKey);
         setSetupGameList(createdArray);
         setJoinedGameList(activeArray);
     }
@@ -181,7 +134,6 @@ export const Body: FC = () => {
             try {
                 const address = new PublicKey(target.textContent);
                 setCurrentGame(address);
-                getBoardData();
             } catch (e) {
                 console.log(e);
             }
@@ -198,7 +150,8 @@ export const Body: FC = () => {
                 <Board
                     title="My Game"
                     onClick={handleTurnSubmit}
-                    board={gameBoard}/>}
+                    board={gameBoard}
+                />}
             </section>
             <Side>
                 <Nav />

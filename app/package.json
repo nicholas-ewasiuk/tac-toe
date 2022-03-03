@@ -5,9 +5,9 @@
   "license": "GPL-3.0",
   "scripts": {
     "clean": "shx rm -rf dist .parcel-cache",
-    "build-dev": "parcel build ./index.html --public-url ./",
-    "build": "yarn clean && parcel build index.html",
-    "start": "yarn clean && parcel index.html",
+    "build-dev": "parcel build index.html --public-url ./",
+    "build": "yarn clean && parcel build ./app/index.html",
+    "start": "yarn clean && parcel ./app/index.html",
     "push-gh-pages": "push-dir --dir=dist --branch=gh-pages --cleanup --verbose"
   },
   "dependencies": {

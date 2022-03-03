@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 type Props = {
   title: string;
   onClick: React.MouseEventHandler;
-  board: [][];
+  board: any[][];
 };
 
 export const Board = ({title, onClick, board}: Props) => {
