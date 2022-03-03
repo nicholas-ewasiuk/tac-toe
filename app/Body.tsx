@@ -227,7 +227,7 @@ export const Body: FC = () => {
                         await refetchSOL();
                     }}
                     >
-                        Request 1 SOL
+                        Request SOL
                     </button>
                 </div>
             </Side>
