@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useEffect, useState } from 'react';
+import React, { ChangeEventHandler, FormEventHandler, MouseEventHandler, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { useConnectedWallet, useSolana } from '@saberhq/use-solana';
 import { AccountInfo, ParsedAccountData, PublicKey } from '@solana/web3.js';
@@ -22,6 +22,7 @@ export const Home: React.FC = () => {
     pubkey: PublicKey;
     account: AccountInfo<Buffer | ParsedAccountData>;
   }[] | null>(null);
+  const [ gameInput, setGameInput ] = useState<string>("");
 
   const { providerMut, connection } = useSolana();
   const wallet = useConnectedWallet();
@@ -68,6 +69,23 @@ export const Home: React.FC = () => {
     }
   } 
 
+  const updateGameInput: ChangeEventHandler<HTMLInputElement> = (event) => {
+      if (event.target) {
+        setGameInput(event.target.value);
+      }
+  }
+
+  const handleGameSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
+      event.preventDefault();
+      try {
+          const address = new PublicKey(gameInput);
+          const { createdArray } = await searchGames(connection, address);
+          setCreatedGamesList(createdArray);
+      } catch (e) {
+          console.log(e);
+      }
+  }
+
   useEffect(() => {
     async function fetchGames() {
       if (wallet && providerMut) {
@@ -89,8 +107,11 @@ export const Home: React.FC = () => {
         >
           Create A Game
         </Button>
-        <a href='/explore'>Find A Game</a>
+        <a href='/search'>Find A Game</a>
       </Buttons>
+      <p>
+        {currentGame?.address.toString()}
+      </p>
       {currentGame ? <Board
           title="My Game"
           onClick={handleTurnSubmit}
@@ -108,6 +129,13 @@ export const Home: React.FC = () => {
         onClick={getListItem}
         gameAccounts={createdGamesList}
       />: <div />}
+      <form onSubmit={handleGameSubmit}>
+          <label>
+          Search:
+          <input type="text" value={gameInput} onChange={updateGameInput} />
+          </label>
+          <input type="submit" value="Submit" />
+      </form>
     </AppWrapper>
   );
 };

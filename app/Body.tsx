@@ -6,7 +6,6 @@ import { useSolana, useConnectedWallet } from '@saberhq/use-solana';
 import { Buffer } from 'buffer';
 import { Nav } from './components/Nav';
 
-import { TIC_TAC_TOE_ID } from './constants';
 import { GameList } from './components/GameList';
 import { Board } from './components/Board';
 import { css } from "@emotion/react";

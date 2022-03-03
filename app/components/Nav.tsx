@@ -3,21 +3,10 @@ import { ConnectWalletButton } from '@gokiprotocol/walletkit';
 import styled from '@emotion/styled';
 
 export const Nav = () => {
-
   return (
     <NavBar>
       <div>
-        <a href='/created'>
-          <button>
-            Created
-          </button>
-        </a>
-        <a href='/active'>
-          <button>
-            Active
-          </button>
-        </a>
-        <a href='/explore'>
+        <a href='/search'>
           <button>
             Explore
           </button>
