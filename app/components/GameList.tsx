@@ -2,7 +2,6 @@ import { AccountInfo, ParsedAccountData, PublicKey } from '@solana/web3.js';
 import React from 'react';
 
 type Props = {
-  title: string,
   onClick: React.MouseEventHandler;
   gameAccounts: {
     pubkey: PublicKey;
@@ -10,7 +9,7 @@ type Props = {
   }[],
 };
 
-export const GameList = ({title, onClick, gameAccounts}: Props) => {
+export const GameList = ({ onClick, gameAccounts}: Props) => {
   
   const listItems = gameAccounts.map((account) => 
     <li 
@@ -21,12 +20,10 @@ export const GameList = ({title, onClick, gameAccounts}: Props) => {
   );
 
   return (
-    <li 
-      key={title}
+    <ul
       onClick={onClick}
-      >
-        {title}
-      <ul>{listItems}</ul>
-    </li>
+    >
+      {listItems}
+    </ul>
   );
 }

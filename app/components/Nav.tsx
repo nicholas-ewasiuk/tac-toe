@@ -12,7 +12,7 @@ export const Nav = () => {
           </button>
         </a>
       </div>
-      <ConnectWalletButton />
+      <ConnectWalletButton variant="primary" />
     </NavBar>
   )
 }

@@ -4,6 +4,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useConnectedWallet, useSolana } from '@saberhq/use-solana';
 import { AccountInfo, LAMPORTS_PER_SOL, ParsedAccountData, PublicKey } from '@solana/web3.js';
+import { PendingTransaction } from '@saberhq/solana-contrib';
 
 import { Nav } from './components/Nav';
 import { Board } from './components/Board';
@@ -12,7 +13,8 @@ import { setupGame } from './actions/setupGame';
 import { playTurn } from './actions/playTurn';
 import { Game, getGame } from './state/game';
 import { searchGames } from './actions/searchGames';
-import { PendingTransaction } from '@saberhq/solana-contrib';
+import { DownIcon } from './components/images/DownIcon';
+
 
 
 export const Home: React.FC = () => {
@@ -25,8 +27,15 @@ export const Home: React.FC = () => {
     pubkey: PublicKey;
     account: AccountInfo<Buffer | ParsedAccountData>;
   }[] | null>(null);
+  const [ searchGamesList, setSearchGamesList ] = useState<{
+    pubkey: PublicKey;
+    account: AccountInfo<Buffer | ParsedAccountData>;
+  }[] | null>(null);
   const [ gameInput, setGameInput ] = useState<string>("");
   const [ balance, setBalance ] = useState<number | null>(null);
+  const [ createdIsOpen, setCreatedIsOpen ] = useState(false);
+  const [ activeIsOpen, setActiveIsOpen ] = useState(false);
+  const [ searchIsOpen, setSearchIsOpen ] = useState(false);
 
   const { providerMut, connection } = useSolana();
   const wallet = useConnectedWallet();
@@ -90,7 +99,7 @@ export const Home: React.FC = () => {
       try {
           const address = new PublicKey(gameInput);
           const { createdArray } = await searchGames(connection, address);
-          setCreatedGamesList(createdArray);
+          setSearchGamesList(createdArray);
       } catch (e) {
           console.log(e);
       }
@@ -147,12 +156,12 @@ export const Home: React.FC = () => {
                   right: 0;
                   margin: auto;
                 `}
-              disabled={!providerMut}
-              onClick={handleSetupGame}
-            >
-              Create A Game
-            </button>
-          </>
+                disabled={!providerMut}
+                onClick={handleSetupGame}
+              >
+                Create A Game
+              </button>
+            </>
           )}
         </div>
         <div
@@ -161,18 +170,38 @@ export const Home: React.FC = () => {
             flex-direction: column;
           `}
         >
-          {activeGamesList ?
-          <GameList
-            title="Active Games:"
-            onClick={getListItem}
-            gameAccounts={activeGamesList}
-          />: <div />}
-          {createdGamesList ?
-          <GameList
-            title="Created Games:"
-            onClick={getListItem}
-            gameAccounts={createdGamesList}
-          />: <div />}
+          <h2
+            css={css`
+              display: flex;
+              justify-content: space-evenly;
+              align-items: center;
+              background: #70ed9d;
+              border-radius: 4px;
+            `}
+            onClick={() => setActiveIsOpen(!activeIsOpen)}
+          >
+            Active
+            <DownIcon />
+          </h2>
+          {activeGamesList && activeIsOpen ? (
+            <GameList
+              onClick={getListItem}
+              gameAccounts={activeGamesList}
+            /> 
+          ) : (
+            <div />
+          )}
+          <h2 onClick={() => setCreatedIsOpen(!createdIsOpen)}>
+            Created Games
+          </h2>
+          {createdGamesList && createdIsOpen ? (
+            <GameList
+              onClick={getListItem}
+              gameAccounts={createdGamesList}
+            /> 
+          ) : ( 
+            <div />
+          )}
           <form onSubmit={handleGameSubmit}>
               <label>
               Search:
@@ -180,6 +209,14 @@ export const Home: React.FC = () => {
               </label>
               <input type="submit" value="Submit" />
           </form>
+          {searchGamesList && searchIsOpen ? (
+            <GameList
+              onClick={getListItem}
+              gameAccounts={searchGamesList}
+            /> 
+          ) : ( 
+            <div />
+          )}
           <div>
               Balance:{" "}
               {typeof balance === "number"
