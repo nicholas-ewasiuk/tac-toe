@@ -191,8 +191,17 @@ export const Home: React.FC = () => {
           ) : (
             <div />
           )}
-          <h2 onClick={() => setCreatedIsOpen(!createdIsOpen)}>
+          <h2 
+            css={css`
+              display: flex;
+              justify-content: space-evenly;
+              align-items: center;
+              background: #70ed9d;
+              border-radius: 4px;
+            `}
+            onClick={() => setCreatedIsOpen(!createdIsOpen)}>
             Created Games
+            <DownIcon />
           </h2>
           {createdGamesList && createdIsOpen ? (
             <GameList
@@ -202,7 +211,15 @@ export const Home: React.FC = () => {
           ) : ( 
             <div />
           )}
-          <form onSubmit={handleGameSubmit}>
+          <form
+            css={css`
+              display: flex;
+              justify-content: space-evenly;
+              align-items: center;
+              background: #70ed9d;
+              border-radius: 4px;
+            `}
+            onSubmit={handleGameSubmit}>
               <label>
               Search:
               <input type="text" value={gameInput} onChange={updateGameInput} />
@@ -224,8 +241,8 @@ export const Home: React.FC = () => {
                   : "--"} 
           </div>
           <button 
-          disabled={!providerMut}
-          onClick={async () => {
+            disabled={!providerMut}
+            onClick={async () => {
               const txSig = await connection.requestAirdrop(
                   providerMut.wallet.publicKey,
                   LAMPORTS_PER_SOL
