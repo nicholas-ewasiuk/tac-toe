@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from '@emotion/styled';
+
 import { Game } from '../state/game';
+
 
 type Props = {
   title: string;
@@ -31,14 +33,13 @@ export const Board = ({title, onClick, game}: Props) => {
       title={title}
       onClick={onClick}
       >
-       {boardItems}
+        {boardItems}
     </BoardLayout>
   )
 }
 
 const BoardLayout = styled.ul`
   position: absolute;
-  margin: 20px 50px 20px 4px;
   padding: 0px;
   width: 450px;
   height: 450px;
@@ -46,7 +47,7 @@ const BoardLayout = styled.ul`
   left: 0;
   bottom: 0;
   right: 0;
-  margin: auto;
+  margin: 34px 0 0 0;
   list-style-type: none;
 `;
 
@@ -61,14 +62,14 @@ const Square = styled.li`
   display: flex;
   border-width: 2px;
   font-size: 96px;
-  font-family: 'DotGothic16', sans-serif;
   border-style: none;
+  border-radius: 50px;
   justify-content: center;
   align-items: center;
   width: 100%;
   height: 100%;
   padding: 0px;
   &:hover {
-    background-color: grey;
+    background: radial-gradient( #cccbcb 1%, transparent 50%);
   }
 `;

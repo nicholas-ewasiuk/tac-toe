@@ -2,7 +2,7 @@
 import { Game } from '../state/game';
 import { ConnectedWallet } from '@saberhq/use-solana';
 
-export function getGameStatus(
+export function getStatus(
   game: Game,
   wallet: ConnectedWallet,
 ) {

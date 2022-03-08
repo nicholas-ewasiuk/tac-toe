@@ -16,9 +16,7 @@ import { searchGames } from './actions/searchGames';
 import { DownIcon } from './components/images/DownIcon';
 import { BoardBackground } from './components/images/BoardBackground';
 import { joinGame } from './actions/joinGame';
-import { getGameStatus } from './actions/getGameStatus';
-
-
+import { getStatus } from './actions/getStatus';
 
 export const Home: React.FC = () => {
   const [ currentGame, setCurrentGame ] = useState<Game | null>(null);
@@ -117,7 +115,7 @@ export const Home: React.FC = () => {
 
   useEffect(() => {
     if (currentGame && wallet) {
-      const status = getGameStatus(currentGame, wallet);
+      const status = getStatus(currentGame, wallet);
       setGameStatus(status);
   }
   }, [currentGame, wallet]);
