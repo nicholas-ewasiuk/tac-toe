@@ -1,15 +1,15 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { Game } from '../state/game';
 
 type Props = {
   title: string;
   onClick: React.MouseEventHandler;
-  board: any[][];
+  game: Game;
 };
 
-export const Board = ({title, onClick, board}: Props) => {
-
-  const boardItems = board.map((row: JSX.Element[], index) => 
+export const Board = ({title, onClick, game}: Props) => {
+  const boardItems = game.board.map((row: JSX.Element[], index) => 
     <li
       key={index}
       value={index}
@@ -37,11 +37,16 @@ export const Board = ({title, onClick, board}: Props) => {
 }
 
 const BoardLayout = styled.ul`
-  display: block;
+  position: absolute;
   margin: 20px 50px 20px 4px;
   padding: 0px;
   width: 450px;
   height: 450px;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
   list-style-type: none;
 `;
 
@@ -57,7 +62,7 @@ const Square = styled.li`
   border-width: 2px;
   font-size: 96px;
   font-family: 'DotGothic16', sans-serif;
-  border-style: solid;
+  border-style: none;
   justify-content: center;
   align-items: center;
   width: 100%;

@@ -14,6 +14,9 @@ import { playTurn } from './actions/playTurn';
 import { Game, getGame } from './state/game';
 import { searchGames } from './actions/searchGames';
 import { DownIcon } from './components/images/DownIcon';
+import { BoardBackground } from './components/images/BoardBackground';
+import { joinGame } from './actions/joinGame';
+import { getGameStatus } from './actions/getGameStatus';
 
 
 
@@ -31,11 +34,11 @@ export const Home: React.FC = () => {
     pubkey: PublicKey;
     account: AccountInfo<Buffer | ParsedAccountData>;
   }[] | null>(null);
-  const [ gameInput, setGameInput ] = useState<string>("");
+  const [ searchInput, setSearchInput ] = useState<string>("");
   const [ balance, setBalance ] = useState<number | null>(null);
   const [ createdIsOpen, setCreatedIsOpen ] = useState(false);
   const [ activeIsOpen, setActiveIsOpen ] = useState(false);
-  const [ searchIsOpen, setSearchIsOpen ] = useState(false);
+  const [ gameStatus, setGameStatus ] = useState("Select a game or create new.");
 
   const { providerMut, connection } = useSolana();
   const wallet = useConnectedWallet();
@@ -49,6 +52,12 @@ export const Home: React.FC = () => {
   const handleSetupGame = async () => {
     if (!providerMut || !wallet) throw new Error("Wallet not connected.");
       await setupGame(providerMut, wallet);
+  }
+
+  const handleJoinGame = async () => {
+    if (!providerMut || !wallet) throw new Error("Wallet not connected.");
+    if (!currentGame) throw new Error("No game selected");
+      await joinGame(providerMut, wallet, currentGame.address);
   }
 
   const handleTurnSubmit: MouseEventHandler<Element> = async (event) => {
@@ -88,22 +97,30 @@ export const Home: React.FC = () => {
     }
   } 
 
-  const updateGameInput: ChangeEventHandler<HTMLInputElement> = (event) => {
+  const updateSearchInput: ChangeEventHandler<HTMLInputElement> = (event) => {
       if (event.target) {
-        setGameInput(event.target.value);
+        setSearchInput(event.target.value);
       }
   }
 
-  const handleGameSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
+  const handleSearchSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
       event.preventDefault();
       try {
-          const address = new PublicKey(gameInput);
+          const address = new PublicKey(searchInput);
           const { createdArray } = await searchGames(connection, address);
           setSearchGamesList(createdArray);
       } catch (e) {
+          setSearchGamesList(null);
           console.log(e);
       }
   }
+
+  useEffect(() => {
+    if (currentGame && wallet) {
+      const status = getGameStatus(currentGame, wallet);
+      setGameStatus(status);
+  }
+  }, [currentGame, wallet]);
 
   useEffect(() => {
     void refetchSOL();
@@ -134,17 +151,12 @@ export const Home: React.FC = () => {
           </p>
           {currentGame ? (
             <Board
-                title="My Game"
-                onClick={handleTurnSubmit}
-                board={currentGame.board}
+              title="My Game"
+              onClick={handleTurnSubmit}
+              game={currentGame}
             /> 
           ) : (
             <> 
-              <Board
-                title="My Game"
-                onClick={handleTurnSubmit}
-                board={[[null,null,null],[null,null,null],[null,null,null]]}
-              />
               <button
                 css={css`
                   position: absolute;
@@ -162,6 +174,28 @@ export const Home: React.FC = () => {
                 Create A Game
               </button>
             </>
+          )}
+          <BoardBackground
+            css={css`
+              position: absolute;
+              top: 0;
+              left: 0;
+              bottom: 0;
+              right: 0;
+              margin: auto;
+            `} 
+          />
+          {gameStatus === "Join game?" ? (
+            <>
+              <p>{gameStatus}</p>
+              <button
+                onClick={handleJoinGame}
+              >
+                Join Game
+              </button>
+            </>
+          ) : (
+            <p>{gameStatus}</p>
           )}
         </div>
         <div
@@ -222,14 +256,35 @@ export const Home: React.FC = () => {
               background: #70ed9d;
               border-radius: 4px;
             `}
-            onSubmit={handleGameSubmit}>
-              <label>
-              Search:
-              <input type="text" value={gameInput} onChange={updateGameInput} />
-              </label>
-              <input type="submit" value="Submit" />
+            onSubmit={handleSearchSubmit}
+          >
+            <input 
+              css={css`
+                padding: 6px;
+                border: none;
+                border-radius: 4px;
+                background-color: inherit;
+                &:focus {
+                  outline: none;
+                }
+              `}
+              type="text" 
+              placeholder="Enter a player's address"
+              value={searchInput} 
+              onChange={updateSearchInput} 
+            />
+            <input
+              css={css`
+                margin: 0 10px 0 0;
+                border: none;
+                border-radius: 4px;
+                background: #B5B5B5;
+              `} 
+              type="submit" 
+              value="Search" 
+            />
           </form>
-          {searchGamesList && searchIsOpen ? (
+          {searchGamesList ? (
             <GameList
               onClick={getListItem}
               gameAccounts={searchGamesList}

@@ -38,14 +38,14 @@ export async function searchGames(
   const activeArray = [];
   const createdArray = [];
   for (let i = 0; i < setupGames.length; i++) {
-      for (let j = 32; j < 64; j++) {
-          if (setupGames[i].account.data[j] !== 0 ) {
-              activeArray.push(setupGames[i]);
-              break;
-          } else if (j === 63) {
-              createdArray.push(setupGames[i]);
-          }
-      }
+    for (let j = 32; j < 64; j++) {
+        if (setupGames[i].account.data[j] !== 0 ) {
+            activeArray.push(setupGames[i]);
+            break;
+        } else if (j === 63) {
+            createdArray.push(setupGames[i]);
+        }
+    }
   }
   for (let i = 0; i < joinedGames.length; i++) {
       for (let j = 0; j < activeArray.length; j++) {
