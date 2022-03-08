@@ -122,7 +122,7 @@ export const Home: React.FC = () => {
 
   return (
     <AppWrapper>
-      <Nav />
+      <Nav wallet={wallet} />
       <Main>
         <div 
           css={css`
@@ -175,6 +175,7 @@ export const Home: React.FC = () => {
               display: flex;
               justify-content: space-evenly;
               align-items: center;
+              margin: 20px 0 0 0;
               background: #70ed9d;
               border-radius: 4px;
             `}
@@ -196,6 +197,7 @@ export const Home: React.FC = () => {
               display: flex;
               justify-content: space-evenly;
               align-items: center;
+              margin: 20px 0 0 0;
               background: #70ed9d;
               border-radius: 4px;
             `}
@@ -216,6 +218,7 @@ export const Home: React.FC = () => {
               display: flex;
               justify-content: space-evenly;
               align-items: center;
+              margin: 20px 0 0 0;
               background: #70ed9d;
               border-radius: 4px;
             `}
@@ -271,4 +274,5 @@ const AppWrapper = styled.div`
 const Main = styled.div`
   display: flex;
   flex-direction: row;
+  margin: 50px 0 0 0;
 `

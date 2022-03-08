@@ -12,7 +12,7 @@ type Props = {
   }[],
 };
 
-export const GameList = ({ onClick, gameAccounts}: Props) => {
+export const GameList = ({ onClick, gameAccounts }: Props) => {
   
   const listItems = gameAccounts.map((account) => 
     <li 

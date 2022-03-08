@@ -38,7 +38,7 @@ export const Board = ({title, onClick, board}: Props) => {
 
 const BoardLayout = styled.ul`
   display: block;
-  margin: 20px 4px 20px 4px;
+  margin: 20px 50px 20px 4px;
   padding: 0px;
   width: 450px;
   height: 450px;
