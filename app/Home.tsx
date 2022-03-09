@@ -3,7 +3,7 @@ import React, { ChangeEventHandler, FormEventHandler, MouseEventHandler, useCall
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useConnectedWallet, useSolana } from '@saberhq/use-solana';
-import { AccountInfo, LAMPORTS_PER_SOL, ParsedAccountData, PublicKey } from '@solana/web3.js';
+import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { PendingTransaction } from '@saberhq/solana-contrib';
 
 import { Nav } from './components/Nav';
@@ -11,18 +11,15 @@ import { Board } from './components/Board';
 import { setupGame } from './actions/setupGame';
 import { playTurn } from './actions/playTurn';
 import { Game, getGame } from './state/game';
-import { searchGames } from './actions/searchGames';
 import { BoardBackground } from './components/images/BoardBackground';
 import { joinGame } from './actions/joinGame';
 import { GameList } from './components/GameList';
 import { StatusBar } from './components/StatusBar';
 import { GameButton } from './components/GameButton';
-import { ListItems } from './components/ListItems';
+import { SearchBar } from './components/SearchBar';
 
 export const Home: React.FC = () => {
   const [ currentGame, setCurrentGame ] = useState<Game | null>(null);
-  const [ searchInput, setSearchInput ] = useState<string>("");
-  const [ searchPubkey, setSearchPubkey ] = useState<PublicKey | undefined>(undefined);
   const [ balance, setBalance ] = useState<number | null>(null);
 
   const { providerMut, connection } = useSolana();
@@ -52,20 +49,20 @@ export const Home: React.FC = () => {
 
     const target = event.target;
     if (target instanceof HTMLLIElement) {
-        const row = target.parentNode.parentNode.value;
-        const column = target.value;
-        const turnInput = `{row: ${row}, column: ${column}}`
-        const jsonStr = turnInput.replace(/(\w+:)|(\w+ :)/g, function(matchedStr) {
-            return '"' + matchedStr.substring(0, matchedStr.length - 1) + '":';
-        });
-        const tile = JSON.parse(jsonStr) as {row: number, column: number};
-        console.log('A tile was submitted: ' + JSON.stringify(tile));
+      const row = target.parentNode.parentNode.value;
+      const column = target.value;
+      const turnInput = `{row: ${row}, column: ${column}}`
+      const jsonStr = turnInput.replace(/(\w+:)|(\w+ :)/g, function(matchedStr) {
+        return '"' + matchedStr.substring(0, matchedStr.length - 1) + '":';
+      });
+      const tile = JSON.parse(jsonStr) as {row: number, column: number};
+      console.log('A tile was submitted: ' + JSON.stringify(tile));
 
-        if (wallet && providerMut && currentGame) {
-            await playTurn(providerMut, wallet, currentGame.address, tile);
-            const game = await getGame(providerMut, connection, currentGame.address);
-            setCurrentGame(game);
-        }
+      if (wallet && providerMut && currentGame) {
+        await playTurn(providerMut, wallet, currentGame.address, tile);
+        const game = await getGame(providerMut, connection, currentGame.address);
+        setCurrentGame(game);
+      }
     }
   }
 
@@ -81,27 +78,6 @@ export const Home: React.FC = () => {
         }
     }
   } 
-
-  const updateSearchInput: ChangeEventHandler<HTMLInputElement> = (event) => {
-      if (event.target) {
-        setSearchInput(event.target.value);
-      }
-  }
-
-  const handleSearchSubmit: FormEventHandler<HTMLFormElement> = (event) => {
-    event.preventDefault();
-    const getPubkey = (input: string) => {
-      let address: PublicKey | undefined;
-      try {
-        address = new PublicKey(input);
-        return address;
-      } catch (e) {
-        return undefined;
-      }
-    }
-    const pubkey = getPubkey(searchInput);
-    setSearchPubkey(pubkey);
-  }
 
   useEffect(() => {
     void refetchSOL();
@@ -169,23 +145,9 @@ export const Home: React.FC = () => {
             connection={connection}
             isActive={false}
           />
-          <SearchForm onSubmit={handleSearchSubmit}>
-            <InputText
-              type="text" 
-              placeholder="Enter a player's address"
-              value={searchInput} 
-              onChange={updateSearchInput} 
-            />
-            <InputBtn
-              type="submit" 
-              value="Search" 
-            />
-          </SearchForm>
-          <ListItems
+          <SearchBar
             onClick={getListItem}
-            address={searchPubkey}
             connection={connection}
-            isActive={true}
           /> 
           <div>
               Balance:{" "}
