@@ -128,6 +128,7 @@ export const Home: React.FC = () => {
               position: relative;
               display: flex;
               flex-direction: column;
+              justify-content: center;
               align-items: center;
               border-radius: 10px;
               padding: 0 20px 20px 20px;
@@ -136,6 +137,8 @@ export const Home: React.FC = () => {
           >
             <p
               css={css`
+                height: 30px;
+                padding-top: 10px;
                 text-align: center;
                 color: #476974;
               `}

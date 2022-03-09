@@ -4,6 +4,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { Game } from '../state/game';
+import { Square } from './Square';
 
 
 type Props = {
@@ -24,9 +25,9 @@ export const Board = ({title, onClick, game}: Props) => {
           <Square
             key={index}
             value={index}
-            >
-              {element ? JSON.stringify(element).slice(2,3) : "\u0000"}
-          </Square>)}
+            element={element ? JSON.stringify(element).slice(2,3) : "\u0000"}
+          />
+        )}
         </SubRow>
     </Row>
   );
@@ -35,14 +36,14 @@ export const Board = ({title, onClick, game}: Props) => {
     <ul
       css={css`
         position: absolute;
-        padding: 0px;
-        width: 450px;
-        height: 450px;
         top: 0;
         left: 0;
         bottom: 0;
         right: 0;
-        margin: 34px 0 0 0;
+        margin: auto;
+        width: 450px;
+        height: 450px;
+        padding: 0px;
         list-style-type: none;
       `}
       title={title}
@@ -66,15 +67,3 @@ const SubRow = styled.ul`
   padding: 0px;
   list-style-type: none;
 `
-
-const Square = styled.li`
-  border-radius: 50px;
-  width: 150px;
-  height: 150px;
-  padding: 0px;
-  font-size: 96px;
-  list-style-type: none;
-  &:hover {
-    background: radial-gradient( #cccbcb 1%, transparent 50%);
-  }
-`;
