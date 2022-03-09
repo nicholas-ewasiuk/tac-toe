@@ -1,4 +1,6 @@
+/** @jsxImportSource @emotion/react */
 import React from 'react';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { Game } from '../state/game';
@@ -11,12 +13,13 @@ type Props = {
 };
 
 export const Board = ({title, onClick, game}: Props) => {
+  //todo: create an element inside Square that takes element as a prop and displays correct symbol.
   const boardItems = game.board.map((row: JSX.Element[], index) => 
-    <li
+    <Row
       key={index}
       value={index}
       >
-        <Row key={index}>
+        <SubRow key={index}>
         {row.map((element: JSX.Element, index) => 
           <Square
             key={index}
@@ -24,34 +27,40 @@ export const Board = ({title, onClick, game}: Props) => {
             >
               {element ? JSON.stringify(element).slice(2,3) : "\u0000"}
           </Square>)}
-        </Row>
-    </li>
+        </SubRow>
+    </Row>
   );
 
   return (
-    <BoardLayout
+    <ul
+      css={css`
+        position: absolute;
+        padding: 0px;
+        width: 450px;
+        height: 450px;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        margin: 34px 0 0 0;
+        list-style-type: none;
+      `}
       title={title}
       onClick={onClick}
       >
         {boardItems}
-    </BoardLayout>
+    </ul>
   )
 }
 
-const BoardLayout = styled.ul`
-  position: absolute;
+const Row = styled.li`
+  display: flex;
+  flex-direction: row;
   padding: 0px;
-  width: 450px;
-  height: 450px;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  margin: 34px 0 0 0;
   list-style-type: none;
-`;
+`
 
-const Row = styled.ul`
+const SubRow = styled.ul`
   display: flex;
   flex-direction: row;
   padding: 0px;
@@ -59,16 +68,12 @@ const Row = styled.ul`
 `
 
 const Square = styled.li`
-  display: flex;
-  border-width: 2px;
-  font-size: 96px;
-  border-style: none;
   border-radius: 50px;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
+  width: 150px;
+  height: 150px;
   padding: 0px;
+  font-size: 96px;
+  list-style-type: none;
   &:hover {
     background: radial-gradient( #cccbcb 1%, transparent 50%);
   }

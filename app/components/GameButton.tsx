@@ -1,8 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { css } from '@emotion/react';
-import { Game } from '../state/game';
-import { ConnectedWallet } from '@saberhq/use-solana';
 
 type Props = {
   onClick: React.MouseEventHandler;

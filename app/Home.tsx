@@ -1,22 +1,23 @@
 /** @jsxImportSource @emotion/react */
-import React, { ChangeEventHandler, FormEventHandler, MouseEventHandler, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useConnectedWallet, useSolana } from '@saberhq/use-solana';
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { PendingTransaction } from '@saberhq/solana-contrib';
 
-import { Nav } from './components/Nav';
-import { Board } from './components/Board';
 import { setupGame } from './actions/setupGame';
 import { playTurn } from './actions/playTurn';
-import { Game, getGame } from './state/game';
-import { BoardBackground } from './components/images/BoardBackground';
+import { Board } from './components/Board';
 import { joinGame } from './actions/joinGame';
 import { GameList } from './components/GameList';
 import { StatusBar } from './components/StatusBar';
 import { GameButton } from './components/GameButton';
 import { SearchBar } from './components/SearchBar';
+import { BoardBackground } from './components/images/BoardBackground';
+import { Game, getGame } from './state/game';
+import { ConnectWalletButton } from '@gokiprotocol/walletkit';
+import { lighten } from 'polished';
 
 export const Home: React.FC = () => {
   const [ currentGame, setCurrentGame ] = useState<Game | null>(null);
@@ -42,7 +43,7 @@ export const Home: React.FC = () => {
       await joinGame(providerMut, wallet, currentGame.address);
   }
 
-  const handleTurnSubmit: MouseEventHandler<Element> = async (event) => {
+  const handleTurnSubmit: React.MouseEventHandler<Element> = async (event) => {
     event.preventDefault();
     if (!providerMut || !wallet) throw new Error("Wallet not connected.");
     if (!currentGame) throw new Error("Game not selected.");
@@ -66,11 +67,11 @@ export const Home: React.FC = () => {
     }
   }
 
-  const getListItem: MouseEventHandler<Element> = async (event) => {
+  const getListItem: React.MouseEventHandler<Element> = async (event) => {
     const target = event.target;
-    if (target instanceof HTMLLIElement && target.textContent && providerMut) {
+    if (target instanceof HTMLLIElement && target.id && providerMut) {
         try {
-            const address = new PublicKey(target.textContent);
+            const address = new PublicKey(target.id);
             const game = await getGame(providerMut, connection, address);
             setCurrentGame(game);
         } catch (e) {
@@ -85,45 +86,69 @@ export const Home: React.FC = () => {
 
   return (
     <AppWrapper>
-      <Nav wallet={wallet} />
       <Main>
-        <div 
+        <div
           css={css`
-            position: relative;
+            display:flex;
+            flex-direction: column;
+            margin: 0 40px 0 40px;
           `}
         >
-          <p>{currentGame?.address.toString()}</p>
-          {currentGame ? (
-            <Board
-              title="My Game"
-              onClick={handleTurnSubmit}
-              game={currentGame}
-            /> 
-          ) : (
-            <GameButton
-              onClick={handleSetupGame}
-              title="Create New Game"
-            />
-          )}
-          <BoardBackground
+          <h1
             css={css`
-              position: absolute;
-              top: 0;
-              left: 0;
-              bottom: 0;
-              right: 0;
-              margin: auto;
-            `} 
-          />
-          <StatusBar
-            game={currentGame}
-            wallet={wallet}
+              display: flex;
+              justify-content: center;
+              margin: 0px;
+              border-radius: 10px;
+              padding: 10px;
+              background: #a3d9c6;
+              font-family: Roboto Slab, serif;
+              font-size: 48px;
+              font-weight: inherit;
+              color: #ffffff;
+            `}
           >
-            <GameButton 
-              onClick={handleJoinGame}
-              title="Join Game"
-            />
-          </StatusBar>
+            TIC-TAC-TOE
+          </h1>
+          <div 
+            css={css`
+              position: relative;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              border-radius: 10px;
+              padding: 0 20px 20px 20px;
+              background: #d6f5ef;
+            `}
+          >
+            <p
+              css={css`
+                text-align: center;
+                color: #476974;
+              `}
+            >
+              {currentGame?.address.toString()}
+            </p>
+            {currentGame ? (
+              <Board
+                title="My Game"
+                onClick={handleTurnSubmit}
+                game={currentGame}
+              /> 
+            ) : (
+              <></>
+            )}
+            <BoardBackground />
+            <StatusBar
+              game={currentGame}
+              wallet={wallet}
+            >
+              <GameButton 
+                onClick={handleJoinGame}
+                title="Join Game"
+              />
+            </StatusBar>
+          </div>
         </div>
         <div
           css={css`
@@ -131,6 +156,21 @@ export const Home: React.FC = () => {
             flex-direction: column;
           `}
         >
+          <ConnectWalletButton
+            css={css`
+              border-radius: 10px;
+              background: #a3d9c6;
+              box-shadow: none;
+              color: #ffffff;
+              &:hover {
+                background: ${lighten(0.1, "#a3d9c6")};
+              }
+              & > span {
+                font-weight: inherit;
+                font-size: 20px;
+              }
+            `} 
+          />
           <GameList
             onClick={getListItem}
             title="Active Games"
@@ -145,6 +185,10 @@ export const Home: React.FC = () => {
             connection={connection}
             isActive={false}
           />
+          <GameButton
+            onClick={handleSetupGame}
+            title="Create New Game"
+          />
           <SearchBar
             onClick={getListItem}
             connection={connection}
@@ -155,7 +199,15 @@ export const Home: React.FC = () => {
                   ? `${(balance / LAMPORTS_PER_SOL).toLocaleString()} SOL`
                   : "--"} 
           </div>
-          <button 
+          <button
+            css={css`
+              border: none;
+              border-radius: 10px;
+              padding: 7px 28px 7px 28px;
+              background: #599baf;
+              font-size: 18px;
+              color: #ffffff;
+            `}
             disabled={!providerMut}
             onClick={async () => {
               const txSig = await connection.requestAirdrop(
@@ -187,28 +239,4 @@ const Main = styled.div`
   display: flex;
   flex-direction: row;
   margin: 50px 0 0 0;
-`
-const SearchForm = styled.form`
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  margin: 20px 0 0 0;
-  background: #70ed9d;
-  border-radius: 4px;
-`
-const InputText = styled.input`
-  padding: 6px;
-  border: none;
-  border-radius: 4px;
-  background-color: inherit;
-  &:focus {
-    outline: none;
-  }
-`
-
-const InputBtn = styled.input`
-  margin: 0 10px 0 0;
-  border: none;
-  border-radius: 4px;
-  background: #B5B5B5;
 `

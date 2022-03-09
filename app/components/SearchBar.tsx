@@ -37,18 +37,48 @@ export const SearchBar = ({ onClick, connection }: Props) => {
   
   return (
     <>
-      <SearchForm onSubmit={handleSearchSubmit}>
-        <InputText
+      <form 
+        css={css`
+          display: flex;
+          justify-content: space-evenly;
+          align-items: center;
+          margin: 20px 0 0 0;
+          border-radius: 10px;
+          padding: 5px;
+          background: #a3d9c6;
+        `}
+        onSubmit={handleSearchSubmit}>
+        <input
+          css={css`
+            border: none;
+            border-radius: 10px;
+            padding: 6px;
+            background: #d6f5ef;
+            font-size: 18px;
+            color: #78a3af;
+            &:focus {
+              outline: none;
+            }
+          `}
           type="text" 
-          placeholder="Enter a player's address"
+          placeholder="Search Player Address"
           value={searchInput} 
           onChange={updateSearchInput} 
         />
-        <InputBtn
+        <input
+          css={css`
+            margin: 0 10px 0 10px;
+            border: none;
+            border-radius: 40px;
+            padding: 5px;
+            background: #d6f5ef;
+            font-size: 18px;
+            color: #78a3af;
+          `}
           type="submit" 
-          value="Search" 
+          value="+" 
         />
-      </SearchForm>
+      </form>
       <ListItems
         onClick={onClick}
         address={searchPubkey}
@@ -58,29 +88,3 @@ export const SearchBar = ({ onClick, connection }: Props) => {
     </>
   );
 }
-
-const SearchForm = styled.form`
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  margin: 20px 0 0 0;
-  background: #70ed9d;
-  border-radius: 4px;
-`
-
-const InputText = styled.input`
-  padding: 6px;
-  border: none;
-  border-radius: 4px;
-  background-color: inherit;
-  &:focus {
-    outline: none;
-  }
-`
-
-const InputBtn = styled.input`
-  margin: 0 10px 0 0;
-  border: none;
-  border-radius: 4px;
-  background: #B5B5B5;
-`

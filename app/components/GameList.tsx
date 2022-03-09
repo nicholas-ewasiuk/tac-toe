@@ -26,11 +26,16 @@ export const GameList = ({ onClick, title, address, connection, isActive }: Prop
       <h2
         css={css`
           display: flex;
-          justify-content: space-evenly;
+          flex-direction: row;
+          justify-content: space-between;
           align-items: center;
           margin: 20px 0 0 0;
-          background: #70ed9d;
-          border-radius: 4px;
+          border-radius: 10px;
+          padding: 7px 18px 7px 18px;
+          background: #a3d9c6;
+          font-size: 22px;
+          font-weight: inherit;
+          color: #ffffff;
         `}
         onClick={() => setIsOpen(!isOpen)}
       >

@@ -37,8 +37,9 @@ export const ListItems = ({ onClick, address, connection, isActive }: Props) => 
       const items = gameAccounts.map((account) => 
         <li 
           key={account.pubkey.toString()}
+          id={account.pubkey.toString()}
           >
-            {account.pubkey.toString()}
+            {account.pubkey.toString().slice(0,12) + '...' + account.pubkey.toString().slice(-12)}
         </li>
       );
       setListItems(items);
@@ -50,11 +51,23 @@ export const ListItems = ({ onClick, address, connection, isActive }: Props) => 
   return (
     <ul
       css={css`
-        background: #e6e6e6ff;
-        border-radius: 4px;
-        margin: 0px;
-        padding: 0px;
+        display: flex;
+        flex-direction: column;
+        margin: 0 0 0 0;
+        border-radius: 10px;
+        padding: 0px 0 0px 0;
+        background: #d6f5ef;
+        text-align: center;
         list-style: none;
+        li {
+          margin: 10px 0 10px 0;
+          font-size: 14px;
+          color: #476974;
+          transition: color .1s ease;
+          &:hover {
+            color: #000000;
+          }
+        }
       `}
       onClick={onClick}
     >
