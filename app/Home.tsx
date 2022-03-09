@@ -16,7 +16,8 @@ import { searchGames } from './actions/searchGames';
 import { DownIcon } from './components/images/DownIcon';
 import { BoardBackground } from './components/images/BoardBackground';
 import { joinGame } from './actions/joinGame';
-import { getStatus } from './actions/getStatus';
+import { ListTopLevel } from './components/ListTopLevel';
+import { StatusBar } from './components/StatusBar';
 
 export const Home: React.FC = () => {
   const [ currentGame, setCurrentGame ] = useState<Game | null>(null);
@@ -114,13 +115,6 @@ export const Home: React.FC = () => {
   }
 
   useEffect(() => {
-    if (currentGame && wallet) {
-      const status = getStatus(currentGame, wallet);
-      setGameStatus(status);
-  }
-  }, [currentGame, wallet]);
-
-  useEffect(() => {
     void refetchSOL();
   }, [refetchSOL]);
 
@@ -183,18 +177,14 @@ export const Home: React.FC = () => {
               margin: auto;
             `} 
           />
-          {gameStatus === "Join game?" ? (
-            <>
-              <p>{gameStatus}</p>
-              <button
-                onClick={handleJoinGame}
-              >
-                Join Game
-              </button>
-            </>
-          ) : (
-            <p>{gameStatus}</p>
-          )}
+          <StatusBar
+            game={currentGame}
+            wallet={wallet}
+          >
+            <button onClick={handleJoinGame}>
+              Join Game
+            </button>
+          </StatusBar>
         </div>
         <div
           css={css`
@@ -202,49 +192,18 @@ export const Home: React.FC = () => {
             flex-direction: column;
           `}
         >
-          <h2
-            css={css`
-              display: flex;
-              justify-content: space-evenly;
-              align-items: center;
-              margin: 20px 0 0 0;
-              background: #70ed9d;
-              border-radius: 4px;
-            `}
-            onClick={() => setActiveIsOpen(!activeIsOpen)}
-          >
-            Active
-            <DownIcon />
-          </h2>
-          {activeGamesList && activeIsOpen ? (
+          <ListTopLevel title="Active Games">
             <GameList
               onClick={getListItem}
               gameAccounts={activeGamesList}
-            /> 
-          ) : (
-            <div />
-          )}
-          <h2 
-            css={css`
-              display: flex;
-              justify-content: space-evenly;
-              align-items: center;
-              margin: 20px 0 0 0;
-              background: #70ed9d;
-              border-radius: 4px;
-            `}
-            onClick={() => setCreatedIsOpen(!createdIsOpen)}>
-            Created Games
-            <DownIcon />
-          </h2>
-          {createdGamesList && createdIsOpen ? (
+            />
+          </ListTopLevel> 
+          <ListTopLevel title="Created Games">
             <GameList
               onClick={getListItem}
               gameAccounts={createdGamesList}
             /> 
-          ) : ( 
-            <div />
-          )}
+          </ListTopLevel>
           <form
             css={css`
               display: flex;

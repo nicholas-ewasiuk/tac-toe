@@ -2,6 +2,7 @@
 import React from 'react';
 import { css } from '@emotion/react';
 import { AccountInfo, ParsedAccountData, PublicKey } from '@solana/web3.js';
+import { EmotionJSX } from '@emotion/react/types/jsx-namespace';
 
 
 type Props = {
@@ -9,18 +10,21 @@ type Props = {
   gameAccounts: {
     pubkey: PublicKey;
     account: AccountInfo<Buffer | ParsedAccountData>;
-  }[],
+  }[] | null,
 };
 
 export const GameList = ({ onClick, gameAccounts }: Props) => {
-  
-  const listItems = gameAccounts.map((account) => 
-    <li 
-      key={account.pubkey.toString()}
-      >
-        {account.pubkey.toString()}
-    </li>
-  );
+  let listItems: EmotionJSX.Element[] = [<div key="1"></div>];
+
+  if (gameAccounts) {
+    listItems = gameAccounts.map((account) => 
+      <li 
+        key={account.pubkey.toString()}
+        >
+          {account.pubkey.toString()}
+      </li>
+    );
+  }
 
   return (
     <ul
