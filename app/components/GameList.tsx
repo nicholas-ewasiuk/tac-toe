@@ -32,7 +32,7 @@ export const GameList = ({ onClick, title, address, connection, isActive }: Prop
           margin: 20px 0 0 0;
           border-radius: 10px;
           padding: 7px 18px 7px 18px;
-          background: #a3d9c6;
+          ${base};
           font-size: 22px;
           font-weight: inherit;
           color: #ffffff;
@@ -52,3 +52,7 @@ export const GameList = ({ onClick, title, address, connection, isActive }: Prop
     </div>
   );
 }
+
+const base = css`
+  background: #6b859d;
+`

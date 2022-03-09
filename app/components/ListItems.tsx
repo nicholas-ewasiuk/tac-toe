@@ -56,7 +56,7 @@ export const ListItems = ({ onClick, address, connection, isActive }: Props) => 
         margin: 0 0 0 0;
         border-radius: 10px;
         padding: 0px 0 0px 0;
-        background: #d6f5ef;
+        ${secondary};
         text-align: center;
         list-style: none;
         li {
@@ -75,3 +75,7 @@ export const ListItems = ({ onClick, address, connection, isActive }: Props) => 
     </ul>
   );
 }
+
+const secondary = css`
+  background: #dbdfe5;
+`

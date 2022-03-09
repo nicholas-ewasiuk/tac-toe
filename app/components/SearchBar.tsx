@@ -45,7 +45,7 @@ export const SearchBar = ({ onClick, connection }: Props) => {
           margin: 20px 0 0 0;
           border-radius: 10px;
           padding: 5px;
-          background: #a3d9c6;
+          ${base};
         `}
         onSubmit={handleSearchSubmit}>
         <input
@@ -53,7 +53,7 @@ export const SearchBar = ({ onClick, connection }: Props) => {
             border: none;
             border-radius: 10px;
             padding: 6px;
-            background: #d6f5ef;
+            ${secondary}
             font-size: 18px;
             color: #78a3af;
             &:focus {
@@ -71,9 +71,9 @@ export const SearchBar = ({ onClick, connection }: Props) => {
             border: none;
             border-radius: 40px;
             padding: 5px;
-            background: #d6f5ef;
+            ${tertiary}
             font-size: 18px;
-            color: #78a3af;
+            color: #ffffff;
           `}
           type="submit" 
           value="+" 
@@ -88,3 +88,15 @@ export const SearchBar = ({ onClick, connection }: Props) => {
     </>
   );
 }
+
+const base = css`
+  background: #6b859d;
+`
+
+const secondary = css`
+  background: #dbdfe5;
+`
+
+const tertiary = css`
+  background: #6099aa;
+`

@@ -14,7 +14,7 @@ export const GameButton = ({ onClick, title }: Props) => {
         border: none;
         border-radius: 10px;
         padding: 7px 28px 7px 28px;
-        background: #599baf;
+        ${tertiary};
         font-size: 18px;
         color: #ffffff;
       `}
@@ -24,3 +24,7 @@ export const GameButton = ({ onClick, title }: Props) => {
     </button>
   )
 }
+
+const tertiary = css`
+  background: #6099aa;
+`

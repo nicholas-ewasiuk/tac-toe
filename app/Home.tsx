@@ -84,6 +84,19 @@ export const Home: React.FC = () => {
     void refetchSOL();
   }, [refetchSOL]);
 
+  /*todo: 
+    -wallet button styling and onconnect change
+    -board svg styling, add refetch board data after submit turn.
+    -change color palette
+    -setup for mobile
+    -request sol balance and button styling
+    -search icon
+    -clean up css
+    -game naming?
+    -closing game accounts
+    -max-height and scrolling for list menus 
+  */
+
   return (
     <AppWrapper>
       <Main>
@@ -101,7 +114,7 @@ export const Home: React.FC = () => {
               margin: 0px;
               border-radius: 10px;
               padding: 10px;
-              background: #a3d9c6;
+              ${base};
               font-family: Roboto Slab, serif;
               font-size: 48px;
               font-weight: inherit;
@@ -118,7 +131,7 @@ export const Home: React.FC = () => {
               align-items: center;
               border-radius: 10px;
               padding: 0 20px 20px 20px;
-              background: #d6f5ef;
+              ${secondary};
             `}
           >
             <p
@@ -143,7 +156,7 @@ export const Home: React.FC = () => {
               game={currentGame}
               wallet={wallet}
             >
-              <GameButton 
+              <GameButton
                 onClick={handleJoinGame}
                 title="Join Game"
               />
@@ -159,7 +172,7 @@ export const Home: React.FC = () => {
           <ConnectWalletButton
             css={css`
               border-radius: 10px;
-              background: #a3d9c6;
+              ${base};
               box-shadow: none;
               color: #ffffff;
               &:hover {
@@ -204,7 +217,7 @@ export const Home: React.FC = () => {
               border: none;
               border-radius: 10px;
               padding: 7px 28px 7px 28px;
-              background: #599baf;
+              ${tertiary};
               font-size: 18px;
               color: #ffffff;
             `}
@@ -239,4 +252,16 @@ const Main = styled.div`
   display: flex;
   flex-direction: row;
   margin: 50px 0 0 0;
+`
+
+const base = css`
+  background: #6b859d;
+`
+
+const secondary = css`
+  background: #dbdfe5;
+`
+
+const tertiary = css`
+  background: #6099aa;
 `
