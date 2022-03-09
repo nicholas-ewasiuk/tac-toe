@@ -1,43 +1,49 @@
 /** @jsxImportSource @emotion/react */
-import React from 'react';
+import React, { useState } from 'react';
 import { css } from '@emotion/react';
-import { AccountInfo, ParsedAccountData, PublicKey } from '@solana/web3.js';
-import { EmotionJSX } from '@emotion/react/types/jsx-namespace';
-
+import { Connection, ParsedAccountData, PublicKey } from '@solana/web3.js';
+import { DownIcon } from './images/DownIcon';
+import { ListItems } from './ListItems';
 
 type Props = {
   onClick: React.MouseEventHandler;
-  gameAccounts: {
-    pubkey: PublicKey;
-    account: AccountInfo<Buffer | ParsedAccountData>;
-  }[] | null,
+  title: string,
+  address: PublicKey | undefined,
+  connection: Connection,
+  isActive: boolean,
 };
 
-export const GameList = ({ onClick, gameAccounts }: Props) => {
-  let listItems: EmotionJSX.Element[] = [<div key="1"></div>];
-
-  if (gameAccounts) {
-    listItems = gameAccounts.map((account) => 
-      <li 
-        key={account.pubkey.toString()}
-        >
-          {account.pubkey.toString()}
-      </li>
-    );
-  }
-
+export const GameList = ({ onClick, title, address, connection, isActive }: Props) => {
+  const [ isOpen, setIsOpen ] = useState(false);
+  
   return (
-    <ul
+    <div
       css={css`
-        background: #e6e6e6ff;
-        border-radius: 4px;
-        margin: 0px;
-        padding: 0px;
-        list-style: none;
+      display: flex;
+      flex-direction: column;
       `}
-      onClick={onClick}
     >
-      {listItems}
-    </ul>
+      <h2
+        css={css`
+          display: flex;
+          justify-content: space-evenly;
+          align-items: center;
+          margin: 20px 0 0 0;
+          background: #70ed9d;
+          border-radius: 4px;
+        `}
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        {title}
+        <DownIcon />
+      </h2>
+      {isOpen && address &&
+        <ListItems
+          onClick={onClick}
+          address={address}
+          connection={connection}
+          isActive={isActive}
+        />}
+    </div>
   );
 }

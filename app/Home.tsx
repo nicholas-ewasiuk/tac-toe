@@ -8,36 +8,22 @@ import { PendingTransaction } from '@saberhq/solana-contrib';
 
 import { Nav } from './components/Nav';
 import { Board } from './components/Board';
-import { GameList } from './components/GameList';
 import { setupGame } from './actions/setupGame';
 import { playTurn } from './actions/playTurn';
 import { Game, getGame } from './state/game';
 import { searchGames } from './actions/searchGames';
-import { DownIcon } from './components/images/DownIcon';
 import { BoardBackground } from './components/images/BoardBackground';
 import { joinGame } from './actions/joinGame';
-import { ListTopLevel } from './components/ListTopLevel';
+import { GameList } from './components/GameList';
 import { StatusBar } from './components/StatusBar';
+import { GameButton } from './components/GameButton';
+import { ListItems } from './components/ListItems';
 
 export const Home: React.FC = () => {
   const [ currentGame, setCurrentGame ] = useState<Game | null>(null);
-  const [ createdGamesList, setCreatedGamesList ] = useState<{
-    pubkey: PublicKey;
-    account: AccountInfo<Buffer | ParsedAccountData>;
-  }[] | null>(null);
-  const [ activeGamesList, setActiveGamesList ] = useState<{
-    pubkey: PublicKey;
-    account: AccountInfo<Buffer | ParsedAccountData>;
-  }[] | null>(null);
-  const [ searchGamesList, setSearchGamesList ] = useState<{
-    pubkey: PublicKey;
-    account: AccountInfo<Buffer | ParsedAccountData>;
-  }[] | null>(null);
   const [ searchInput, setSearchInput ] = useState<string>("");
+  const [ searchPubkey, setSearchPubkey ] = useState<PublicKey | undefined>(undefined);
   const [ balance, setBalance ] = useState<number | null>(null);
-  const [ createdIsOpen, setCreatedIsOpen ] = useState(false);
-  const [ activeIsOpen, setActiveIsOpen ] = useState(false);
-  const [ gameStatus, setGameStatus ] = useState("Select a game or create new.");
 
   const { providerMut, connection } = useSolana();
   const wallet = useConnectedWallet();
@@ -102,32 +88,24 @@ export const Home: React.FC = () => {
       }
   }
 
-  const handleSearchSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
-      event.preventDefault();
+  const handleSearchSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
+    const getPubkey = (input: string) => {
+      let address: PublicKey | undefined;
       try {
-          const address = new PublicKey(searchInput);
-          const { createdArray } = await searchGames(connection, address);
-          setSearchGamesList(createdArray);
+        address = new PublicKey(input);
+        return address;
       } catch (e) {
-          setSearchGamesList(null);
-          console.log(e);
+        return undefined;
       }
+    }
+    const pubkey = getPubkey(searchInput);
+    setSearchPubkey(pubkey);
   }
 
   useEffect(() => {
     void refetchSOL();
   }, [refetchSOL]);
-
-  useEffect(() => {
-    async function fetchGames() {
-      if (wallet && providerMut) {
-        const { activeArray, createdArray } = await searchGames(connection, wallet.publicKey);
-        setCreatedGamesList(createdArray);
-        setActiveGamesList(activeArray);
-      }
-    }
-    fetchGames();
-  },[wallet, providerMut]);
 
   return (
     <AppWrapper>
@@ -138,9 +116,7 @@ export const Home: React.FC = () => {
             position: relative;
           `}
         >
-          <p>
-            {currentGame?.address.toString()}
-          </p>
+          <p>{currentGame?.address.toString()}</p>
           {currentGame ? (
             <Board
               title="My Game"
@@ -148,24 +124,10 @@ export const Home: React.FC = () => {
               game={currentGame}
             /> 
           ) : (
-            <> 
-              <button
-                css={css`
-                  position: absolute;
-                  width: 150px;
-                  height: 30px;
-                  top: 0;
-                  left: 0;
-                  bottom: 0;
-                  right: 0;
-                  margin: auto;
-                `}
-                disabled={!providerMut}
-                onClick={handleSetupGame}
-              >
-                Create A Game
-              </button>
-            </>
+            <GameButton
+              onClick={handleSetupGame}
+              title="Create New Game"
+            />
           )}
           <BoardBackground
             css={css`
@@ -181,9 +143,10 @@ export const Home: React.FC = () => {
             game={currentGame}
             wallet={wallet}
           >
-            <button onClick={handleJoinGame}>
-              Join Game
-            </button>
+            <GameButton 
+              onClick={handleJoinGame}
+              title="Join Game"
+            />
           </StatusBar>
         </div>
         <div
@@ -192,63 +155,38 @@ export const Home: React.FC = () => {
             flex-direction: column;
           `}
         >
-          <ListTopLevel title="Active Games">
-            <GameList
-              onClick={getListItem}
-              gameAccounts={activeGamesList}
-            />
-          </ListTopLevel> 
-          <ListTopLevel title="Created Games">
-            <GameList
-              onClick={getListItem}
-              gameAccounts={createdGamesList}
-            /> 
-          </ListTopLevel>
-          <form
-            css={css`
-              display: flex;
-              justify-content: space-evenly;
-              align-items: center;
-              margin: 20px 0 0 0;
-              background: #70ed9d;
-              border-radius: 4px;
-            `}
-            onSubmit={handleSearchSubmit}
-          >
-            <input 
-              css={css`
-                padding: 6px;
-                border: none;
-                border-radius: 4px;
-                background-color: inherit;
-                &:focus {
-                  outline: none;
-                }
-              `}
+          <GameList
+            onClick={getListItem}
+            title="Active Games"
+            address={wallet?.publicKey}
+            connection={connection}
+            isActive={true}
+          />
+          <GameList
+            onClick={getListItem} 
+            title="Created Games"
+            address={wallet?.publicKey}
+            connection={connection}
+            isActive={false}
+          />
+          <SearchForm onSubmit={handleSearchSubmit}>
+            <InputText
               type="text" 
               placeholder="Enter a player's address"
               value={searchInput} 
               onChange={updateSearchInput} 
             />
-            <input
-              css={css`
-                margin: 0 10px 0 0;
-                border: none;
-                border-radius: 4px;
-                background: #B5B5B5;
-              `} 
+            <InputBtn
               type="submit" 
               value="Search" 
             />
-          </form>
-          {searchGamesList ? (
-            <GameList
-              onClick={getListItem}
-              gameAccounts={searchGamesList}
-            /> 
-          ) : ( 
-            <div />
-          )}
+          </SearchForm>
+          <ListItems
+            onClick={getListItem}
+            address={searchPubkey}
+            connection={connection}
+            isActive={true}
+          /> 
           <div>
               Balance:{" "}
               {typeof balance === "number"
@@ -287,4 +225,28 @@ const Main = styled.div`
   display: flex;
   flex-direction: row;
   margin: 50px 0 0 0;
+`
+const SearchForm = styled.form`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 20px 0 0 0;
+  background: #70ed9d;
+  border-radius: 4px;
+`
+const InputText = styled.input`
+  padding: 6px;
+  border: none;
+  border-radius: 4px;
+  background-color: inherit;
+  &:focus {
+    outline: none;
+  }
+`
+
+const InputBtn = styled.input`
+  margin: 0 10px 0 0;
+  border: none;
+  border-radius: 4px;
+  background: #B5B5B5;
 `
