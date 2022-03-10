@@ -12,6 +12,9 @@ type Props = {
   balance: number | null,
 }
 
+/**
+ * Added functionality and styles for the @gokiprotocol/walletkit "ConnectWalletButton".
+ */
 export const ModdedWalletButton = ({ wallet, balance }: Props) => {
   return (
     <>

@@ -13,6 +13,9 @@ type Props = {
   connection: Connection,
 };
 
+/**
+ * Fetches and displays "Created" games for a given address.
+ */
 export const SearchBar = ({ onClick, connection }: Props) => {
   const [ searchInput, setSearchInput ] = useState<string>("");
   const [ searchPubkey, setSearchPubkey ] = useState<PublicKey | undefined>(undefined);

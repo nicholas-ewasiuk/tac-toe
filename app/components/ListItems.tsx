@@ -15,6 +15,10 @@ type Props = {
   isActive: boolean,
 };
 
+/**
+ * Displays fetched games for the connected player. 
+ * Option to display "Active" or "Created" games using "isActive" boolean.
+ */
 export const ListItems = ({ onClick, address, connection, isActive }: Props) => {
   const [ listItems, setListItems ] = useState<EmotionJSX.Element[]>([<div key="1"></div>]);
   const [ gameAccounts, setGameAccounts ] = useState<{

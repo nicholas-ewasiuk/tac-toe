@@ -1,6 +1,14 @@
 import { Connection, PublicKey } from '@solana/web3.js';
 import { TIC_TAC_TOE_ID } from '../constants';
 
+/**
+ * Fetchs the Game accounts with the given address in their "players:" field.
+ * Sorts the accounts into games with one or two players joined.
+ * @param connection 
+ * @param address 
+ * @param programId 
+ * @returns 
+ */
 export async function searchGames(
   connection: Connection,
   address: PublicKey,

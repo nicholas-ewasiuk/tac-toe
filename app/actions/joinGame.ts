@@ -6,6 +6,15 @@ import { Idl, Program } from '@project-serum/anchor';
 import { TIC_TAC_TOE_ID } from '../constants';
 import { ticTacToeIdl } from '../idl/ticTacToeIdl';
 
+/**
+ * Adds the connected wallet's pubkey to the selected
+ * Game account's "player:" data field.
+ * @param provider 
+ * @param wallet 
+ * @param address 
+ * @param IDL 
+ * @param programId 
+ */
 export async function joinGame(
   provider: AugmentedProvider,
   wallet: ConnectedWallet, 

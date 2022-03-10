@@ -6,6 +6,13 @@ import { Idl, Program } from '@project-serum/anchor';
 import { TIC_TAC_TOE_ID } from '../constants';
 import { ticTacToeIdl } from '../idl/ticTacToeIdl';
 
+/**
+ * Creates a new Game account.
+ * @param provider 
+ * @param wallet 
+ * @param IDL 
+ * @param programId 
+ */
 export async function setupGame(
   provider: AugmentedProvider,
   wallet: ConnectedWallet, 

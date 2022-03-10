@@ -9,6 +9,9 @@ type Props = {
   title: string,
 }
 
+/**
+ * Button for SOL airdrop 
+ */
 export const FaucetButton = ({ onClick, title }: Props) => {
   return (
     <button

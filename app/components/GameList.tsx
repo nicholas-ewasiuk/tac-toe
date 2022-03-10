@@ -14,6 +14,9 @@ type Props = {
   isActive: boolean,
 };
 
+/**
+ * Wrapper for the ListItems component. Allows opening and closing menu.
+ */
 export const GameList = ({ onClick, title, address, connection, isActive }: Props) => {
   const [ isOpen, setIsOpen ] = useState(false);
   

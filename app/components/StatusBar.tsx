@@ -10,6 +10,9 @@ type Props = {
   children: JSX.Element,
 };
 
+/**
+ * Displays corresponding text for a Game account's "state:" and "turn:" fields.
+ */
 export const StatusBar = ({ game, wallet, children }: Props) => {
   const [ statusText, setStatusText ] = useState("Select a game or create new.");
   const [ playerCanJoin, setPlayerCanJoin ] = useState(false);

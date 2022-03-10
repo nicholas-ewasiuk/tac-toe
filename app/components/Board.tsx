@@ -12,6 +12,9 @@ type Props = {
   game: Game;
 };
 
+/**
+ * Maps data from the Game account's "board:" field to an array of list elements.
+ */
 export const Board = ({title, onClick, game}: Props) => {
   const boardItems = game.board.map((row: JSX.Element[], index) => 
     <Row

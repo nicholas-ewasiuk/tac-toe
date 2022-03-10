@@ -6,12 +6,15 @@ import { XIcon } from './images/XIcon';
 import { OIcon } from './images/OIcon';
 import { breakpoints } from '../App';
 
-
 type Props = {
   element: string;
   value: number;
 }
 
+/**
+ * Displays the corresponding "X" or "O" svg for 
+ * the element passed from the "Board" component.
+ */
 export const Square = ({ element, value }: Props) => {
   const [ square, setSquare ] = useState<EmotionJSX.Element | null>(null);
   

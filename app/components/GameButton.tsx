@@ -9,6 +9,9 @@ type Props = {
   title: string,
 }
 
+/**
+ * Button for game actions
+ */
 export const GameButton = ({ onClick, title }: Props) => {
   return (
     <button
