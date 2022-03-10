@@ -1,5 +1,10 @@
-# tac-toe
-Basic front-end for the Project Serum <a href="https://book.anchor-lang.com/">Anchor Book</a> tic-tac-toe example.
+# Solana Tic-Tac-Toe UI 
+Basic front-end for the <a href="https://book.anchor-lang.com/">Anchor Book</a> Tic-Tac-Toe example.
+
+Live version at <a href=https://tac-toe-omega.vercel.app>
+
+<img src="/app/assets/tac-toe-home01.png" />
+<img src="/app/assets/tac-toe-home02.png" />
 
 ## Running the app
 
