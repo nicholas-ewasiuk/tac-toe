@@ -178,8 +178,9 @@ export const Home: React.FC = () => {
               ${base};
               box-shadow: none;
               color: #ffffff;
+              transition: background .1s ease;
               &:hover {
-                background: ${lighten(0.1, "#a3d9c6")};
+                background: ${lighten(0.1, "#6b859d")};
               }
               & > span {
                 font-weight: inherit;

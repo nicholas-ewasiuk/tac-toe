@@ -14,7 +14,6 @@ type Props = {
 };
 
 export const Board = ({title, onClick, game}: Props) => {
-  //todo: create an element inside Square that takes element as a prop and displays correct symbol.
   const boardItems = game.board.map((row: JSX.Element[], index) => 
     <Row
       key={index}

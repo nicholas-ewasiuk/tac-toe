@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import React from 'react';
 import { css } from '@emotion/react';
+import { lighten } from 'polished';
 
 type Props = {
   onClick: React.MouseEventHandler;
@@ -14,9 +15,13 @@ export const GameButton = ({ onClick, title }: Props) => {
         border: none;
         border-radius: 10px;
         padding: 7px 28px 7px 28px;
-        ${tertiary};
+        background: #6099aa;
         font-size: 18px;
         color: #ffffff;
+        transition: background .1s ease;
+        &:hover {
+          background: ${lighten(0.1, "#6099aa")};
+        }
       `}
       onClick={onClick}
     >
@@ -24,7 +29,3 @@ export const GameButton = ({ onClick, title }: Props) => {
     </button>
   )
 }
-
-const tertiary = css`
-  background: #6099aa;
-`
