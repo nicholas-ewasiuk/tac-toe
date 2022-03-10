@@ -3,7 +3,6 @@ import { newProgram } from '@saberhq/anchor-contrib';
 import { AugmentedProvider } from '@saberhq/solana-contrib';
 import { Keypair, PublicKey, SystemProgram } from '@solana/web3.js';
 import { Idl, Program } from '@project-serum/anchor';
-
 import { TIC_TAC_TOE_ID } from '../constants';
 import { ticTacToeIdl } from '../idl/ticTacToeIdl';
 

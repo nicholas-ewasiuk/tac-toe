@@ -227,3 +227,11 @@ const RequestBtn = styled.button`
     background: ${lighten(0.1, "#6099aa")};
   }
 `
+
+/*
+Todo: 
+  - styling for mobile
+  - separate completed games from active
+  - delete game button
+  - naming games
+*/
