@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState } from 'react';
-import styled from '@emotion/styled';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { lighten } from 'polished';
 import { css } from '@emotion/react';
 import { ListItems } from './ListItems';
 import { breakpoints } from '../App';
+import { SearchIcon } from './images/SearchIcon';
 
 
 type Props = {
@@ -48,7 +48,8 @@ export const SearchBar = ({ onClick, connection }: Props) => {
           margin: 20px 0 0 0;
           border-radius: 10px;
           ${breakpoints.mobile} {
-            width: 450px;
+            width: 348px;
+            height: 56px;
           }
           padding: 5px;
           background: #6b859d;
@@ -58,12 +59,14 @@ export const SearchBar = ({ onClick, connection }: Props) => {
           css={css`
             border: none;
             border-radius: 10px;
-            ${breakpoints.mobile} {
-              width: 350px;
-            }
             padding: 6px;
             background: #dbdfe5;
             font-size: 18px;
+            ${breakpoints.mobile} {
+              width: 350px;
+              height: 40px;
+              font-size: 20px;
+            }
             color: #476974;
             &:focus {
               outline: none;
@@ -74,14 +77,14 @@ export const SearchBar = ({ onClick, connection }: Props) => {
           value={searchInput} 
           onChange={updateSearchInput} 
         />
-        <input
+        <button
           css={css`
             margin: 0 5px 0 10px;
             border: none;
-            border-radius: 40px;
+            border-radius: 20px;
             width: 30px;
             ${breakpoints.mobile} {
-              width: 80px;
+              width: 60px;
             }
             padding: 5px;
             background: #6099aa;
@@ -94,7 +97,9 @@ export const SearchBar = ({ onClick, connection }: Props) => {
           `}
           type="submit" 
           value="" 
-        />
+        >
+          <SearchIcon />
+        </button>
       </form>
       <ListItems
         onClick={onClick}

@@ -1,9 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { useEffect, useState } from 'react';
 import { EmotionJSX } from '@emotion/react/types/jsx-namespace';
-import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 import { XIcon } from './images/XIcon';
 import { OIcon } from './images/OIcon';
+import { breakpoints } from '../App';
+
 
 type Props = {
   element: string;
@@ -29,21 +31,27 @@ export const Square = ({ element, value }: Props) => {
 
 
   return (
-    <SquareItem value={value}>
+    <li
+      css={css`
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50px;
+        width: 150px;
+        height: 150px;
+        ${breakpoints.mobile} {
+          width: 100px;
+          height: 100px;
+        }
+        list-style-type: none;
+        &:hover {
+          background: radial-gradient( #e7ecf1 1%, transparent 50%);
+        }
+      `}
+      value={value}
+    >
       {square}
-    </SquareItem>
+    </li>
   )
 }
 
-const SquareItem = styled.li`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50px;
-  width: 150px;
-  height: 150px;
-  list-style-type: none;
-  &:hover {
-    background: radial-gradient( #e7ecf1 1%, transparent 50%);
-  }
-`

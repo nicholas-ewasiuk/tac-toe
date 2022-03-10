@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const XIcon: React.FC<React.SVGProps<SVGSVGElement>> = ({ width = 65, height = 65, fill = "#ffffff"}) => {
+export const XIcon: React.FC<React.SVGProps<SVGSVGElement>> = ({ width = 65, height = 65, fill = "#ffffff" }) => {
   return (
     <svg width={width} height={height} version="1.1" viewBox="0 0 17.198 17.198" xmlns="http://www.w3.org/2000/svg">
       <g transform="translate(-45.096 -25.935)">

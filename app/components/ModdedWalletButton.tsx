@@ -46,6 +46,8 @@ const button = css`
   border: none;
   @media (max-width: 576px) {
     margin: 0 20px 0 0;
+    width: 140px;
+    height: 60px;
   }
   box-shadow: none;
   border-radius: 10px;

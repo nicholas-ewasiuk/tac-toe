@@ -5,7 +5,6 @@ import styled from '@emotion/styled';
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { useConnectedWallet, useSolana } from '@saberhq/use-solana';
 import { PendingTransaction } from '@saberhq/solana-contrib';
-import { lighten } from 'polished';
 
 import { Game, getGame } from './state/game';
 import { setupGame } from './actions/setupGame';
@@ -18,7 +17,9 @@ import { GameButton } from './components/GameButton';
 import { SearchBar } from './components/SearchBar';
 import { BoardBackground } from './components/images/BoardBackground';
 import { ModdedWalletButton } from './components/ModdedWalletButton';
+import { FaucetButton } from './components/FaucetButton';
 import { breakpoints } from './App';
+
 
 
 export const Home: React.FC = () => {
@@ -78,6 +79,19 @@ export const Home: React.FC = () => {
     }
   } 
 
+  const requestAirdrop: React.MouseEventHandler<Element> = async () => {
+    if (!providerMut || !wallet) throw new Error("Wallet not connected.");
+    const txSig = await connection.requestAirdrop(
+        providerMut.wallet.publicKey,
+        LAMPORTS_PER_SOL
+    );
+    await new PendingTransaction(
+        providerMut.connection,
+        txSig
+    ).wait();
+    await refetchSOL();
+  }
+
   useEffect(() => {
     void refetchSOL();
   }, [refetchSOL]);
@@ -99,8 +113,9 @@ export const Home: React.FC = () => {
             display:flex;
             flex-direction: column;
             margin: 0 40px 0 40px;
+            width: 490px;
             ${breakpoints.mobile} {
-              width: 460px;
+              width: 340px;
             }
           `}
         >
@@ -127,6 +142,10 @@ export const Home: React.FC = () => {
                 height: 60px;
                 text-align: center;
                 color: #476974;
+                ${breakpoints.mobile} {
+                  height: 72px;
+                  font-size: 12px;
+                }
               `}
             >
               {currentGame?.address.toString()}
@@ -176,22 +195,10 @@ export const Home: React.FC = () => {
               wallet={wallet}
               balance={balance}
             />
-            <RequestBtn
-              disabled={!providerMut}
-              onClick={async () => {
-                const txSig = await connection.requestAirdrop(
-                    providerMut.wallet.publicKey,
-                    LAMPORTS_PER_SOL
-                );
-                await new PendingTransaction(
-                    providerMut.connection,
-                    txSig
-                ).wait();
-                await refetchSOL();
-            }}
-            >
-                Request SOL
-            </RequestBtn>
+            <FaucetButton
+              onClick={requestAirdrop}
+              title="Request Airdrop"
+            />
           </div>
           <GameList
             onClick={getListItem}
@@ -240,29 +247,8 @@ const Header = styled.h1`
   color: #ffffff;
 `
 
-const RequestBtn = styled.button`
-  margin: 10px 0 0 0;
-  @media (max-width: 576px) {
-    margin: 0;
-  }
-  border: none;
-  border-radius: 10px;
-  width: 200px;
-  padding: 7px 28px 7px 28px;
-  @media (max-width: 576px) {
-    padding: 10px 28px 9px 28px;;
-  }
-  background: #6099aa;
-  font-size: 18px;
-  color: #ffffff;
-  &:hover {
-    background: ${lighten(0.1, "#6099aa")};
-  }
-`
-
 /*
 Todo: 
-  - tidy breakpoints stuff
   - separate completed games from active
   - delete game button
   - naming games

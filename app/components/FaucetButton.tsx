@@ -5,26 +5,27 @@ import { lighten } from 'polished';
 import { breakpoints } from '../App';
 
 type Props = {
-  onClick: React.MouseEventHandler;
+  onClick: React.MouseEventHandler,
   title: string,
 }
 
-export const GameButton = ({ onClick, title }: Props) => {
+export const FaucetButton = ({ onClick, title }: Props) => {
   return (
     <button
       css={css`
+        margin: 10px 0 0 0;
         border: none;
         border-radius: 10px;
-        ${breakpoints.mobile} {
-          width: 260px;
-          height: 60px;
-          font-size: 20px;
-        }
+        width: 200px;
         padding: 7px 28px 7px 28px;
+        ${breakpoints.mobile} {
+          margin: 0;
+          width: 140px;
+          padding: 10px 28px 9px 28px;;
+        }
         background: #6099aa;
         font-size: 18px;
         color: #ffffff;
-        transition: background .1s ease;
         &:hover {
           background: ${lighten(0.1, "#6099aa")};
         }

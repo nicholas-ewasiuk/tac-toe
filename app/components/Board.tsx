@@ -4,7 +4,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Game } from '../state/game';
 import { Square } from './Square';
-
+import { breakpoints } from '../App';
 
 type Props = {
   title: string;
@@ -41,6 +41,10 @@ export const Board = ({title, onClick, game}: Props) => {
         margin: auto;
         width: 450px;
         height: 450px;
+        ${breakpoints.mobile} {
+          width: 300px;
+          height: 300px;
+        }
         padding: 0px;
         list-style-type: none;
       `}

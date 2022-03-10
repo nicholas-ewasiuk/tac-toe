@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { css } from '@emotion/react';
 import { Connection, PublicKey } from '@solana/web3.js';
-import styled from '@emotion/styled';
 import { DownIcon } from './images/DownIcon';
 import { ListItems } from './ListItems';
 import { breakpoints } from '../App';
@@ -24,16 +23,32 @@ export const GameList = ({ onClick, title, address, connection, isActive }: Prop
       display: flex;
       flex-direction: column;
       ${breakpoints.mobile} {
-        width: 450px;
+        width: 348px;
       }
       `}
     >
-      <ListHeader
+      <h2
+        css={css`
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          margin: 20px 0 0 0;
+          border-radius: 10px;
+          ${breakpoints.mobile} {
+            height: 50px;
+          }
+          padding: 7px 18px 7px 18px;
+          background: #6b859d;
+          font-size: 22px;
+          font-weight: inherit;
+          color: #ffffff;
+        `}
         onClick={() => setIsOpen(!isOpen)}
       >
         {title}
         <DownIcon />
-      </ListHeader>
+      </h2>
       {isOpen && address &&
         <ListItems
           onClick={onClick}
@@ -44,17 +59,3 @@ export const GameList = ({ onClick, title, address, connection, isActive }: Prop
     </div>
   );
 }
-
-const ListHeader = styled.h2`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin: 20px 0 0 0;
-  border-radius: 10px;
-  padding: 7px 18px 7px 18px;
-  background: #6b859d;
-  font-size: 22px;
-  font-weight: inherit;
-  color: #ffffff;
-`
