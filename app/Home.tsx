@@ -119,9 +119,24 @@ export const Home: React.FC = () => {
             }
           `}
         >
-          <Header>
+          <h1 
+            css={css`
+              display: flex;
+              justify-content: center;
+              margin: 0px;
+              border-radius: 10px;
+              padding: 10px;
+              background: #6b859d;
+              font-family: Roboto Slab, serif;
+              font-size: 48px;
+              ${breakpoints.mobile} {
+                font-size: 36px;
+              }
+              font-weight: inherit;
+              color: #ffffff;
+            `}>
             TIC-TAC-TOE
-          </Header>
+          </h1>
           <div 
             css={css`
               position: relative;
@@ -233,19 +248,6 @@ const AppWrapper = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-
-const Header = styled.h1`
-  display: flex;
-  justify-content: center;
-  margin: 0px;
-  border-radius: 10px;
-  padding: 10px;
-  background: #6b859d;
-  font-family: Roboto Slab, serif;
-  font-size: 48px;
-  font-weight: inherit;
-  color: #ffffff;
-`
 
 /*
 Todo: 

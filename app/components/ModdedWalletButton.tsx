@@ -5,6 +5,7 @@ import { ConnectedWallet } from '@saberhq/use-solana';
 import { ConnectWalletButton } from '@gokiprotocol/walletkit';
 import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { SolLogo } from './images/SolLogo';
+import { breakpoints } from '../App';
 
 type Props = {
   wallet: ConnectedWallet | null,
@@ -16,9 +17,16 @@ export const ModdedWalletButton = ({ wallet, balance }: Props) => {
     <>
     { wallet ? (
       <button css={[button, connected]}>
-        <SolLogo 
-          width={18}
-          height={16}/>
+        <div
+          css={css`
+            width: 18px;
+            ${breakpoints.mobile} {
+              width: 40px;
+            }
+          `}
+        >
+          <SolLogo />
+        </div>
         <span>
           {" "}
           {typeof balance === "number"
@@ -55,10 +63,8 @@ const button = css`
   height: 40px;
   padding: 7px 28px 7px 28px;
   background: #6099aa;
-  cursor: pointer;
   font-size: 18px;
   color: #ffffff;
-  mix-blend-mode: normal;
   transition: background .1s ease;
   &:hover {
     background: ${lighten(0.1, "#6099aa")};

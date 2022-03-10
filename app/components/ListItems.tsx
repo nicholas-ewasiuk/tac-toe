@@ -65,7 +65,7 @@ export const ListItems = ({ onClick, address, connection, isActive }: Props) => 
           margin: 10px 0 10px 0;
           font-size: 14px;
           ${breakpoints.mobile} {
-            font-size: 22px;
+            font-size: 18px;
           }
           color: #476974;
           transition: color .1s ease;

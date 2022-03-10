@@ -1,10 +1,9 @@
 # Solana Tic-Tac-Toe UI 
 Basic front-end for the <a href="https://book.anchor-lang.com/">Anchor Book</a> Tic-Tac-Toe example.
 
-Live version at <a href=https://tac-toe-omega.vercel.app>
+Live version at <a href=https://tac-toe-omega.vercel.app>tac-toe-omega.vercel.app</a>
 
 <img src="/app/assets/tac-toe-home01.png" />
-<img src="/app/assets/tac-toe-home02.png" />
 
 ## Running the app
 
