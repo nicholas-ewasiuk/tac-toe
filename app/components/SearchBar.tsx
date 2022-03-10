@@ -63,7 +63,6 @@ export const SearchBar = ({ onClick, connection }: Props) => {
             background: #dbdfe5;
             font-size: 18px;
             ${breakpoints.mobile} {
-              width: 350px;
               height: 40px;
               font-size: 20px;
             }
@@ -79,12 +78,14 @@ export const SearchBar = ({ onClick, connection }: Props) => {
         />
         <button
           css={css`
-            margin: 0 5px 0 10px;
+            margin: 0 5px 0 7px;
             border: none;
             border-radius: 20px;
-            width: 30px;
+            width: 32px;
+            height: 32px;
             ${breakpoints.mobile} {
-              width: 60px;
+              width: 50px;
+              height: 50px;
             }
             padding: 5px;
             background: #6099aa;

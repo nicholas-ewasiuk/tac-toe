@@ -22,15 +22,15 @@ Navigate to `http://localhost:1234/` to explore the deployed application.
 
 ## Playing the game
 
-Connect a wallet. Can create one using <a href=https://phantom.app>phantom.app</a> .
-
-Request airdrop of SOL for fees. The app is set to "devnet" by default.
+Connect a wallet and request airdrop of SOL for fees. The app is set to "devnet" by default.
 
 Click "Create New Game" button. 
 
-Enter a friend's wallet address in the "Search Player Address" bar to see games they've created.
+Get your friends into crypto by forcing them to play with Tic-Tac-Toe with you.
 
-It is also possible to create and then join a game to play against oneself.
+Have them enter your address in the "Search Player Address" bar to see games you've created. Hit join on the game you want.
+
+You can also join your own game and play by yourself.
 
 Play the game by clicking the square you want on your turn, submit the transaction. The square will update as soon as the transaction clears.
 
