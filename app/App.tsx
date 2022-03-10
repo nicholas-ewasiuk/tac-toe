@@ -3,7 +3,7 @@ import { WalletKitProvider } from '@gokiprotocol/walletkit';
 
 import { Home } from './Home';
 
-export const BREAKPOINT_SIZES = [576, 780, 992, 1200] as const;
+export const BREAKPOINT_SIZES = [675, 780, 992, 1200] as const;
 
 const maxMediaQueries = BREAKPOINT_SIZES.map(
   (bp) => `@media (max-width: ${bp}px)`
@@ -21,7 +21,8 @@ const App: React.FC = () => {
       defaultNetwork='devnet'
       app={{
         name: 'tic-tac-toe',
-      }}>
+      }}
+    >
       <Home />
     </WalletKitProvider>
   );

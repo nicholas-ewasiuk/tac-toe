@@ -2,6 +2,7 @@
 import React from 'react';
 import { css } from '@emotion/react';
 import { lighten } from 'polished';
+import { breakpoints } from '../App';
 
 type Props = {
   onClick: React.MouseEventHandler;
@@ -14,6 +15,9 @@ export const GameButton = ({ onClick, title }: Props) => {
       css={css`
         border: none;
         border-radius: 10px;
+        ${breakpoints.mobile} {
+          width: 450px;
+        }
         padding: 7px 28px 7px 28px;
         background: #6099aa;
         font-size: 18px;

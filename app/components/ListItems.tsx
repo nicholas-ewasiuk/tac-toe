@@ -69,6 +69,9 @@ const List = styled.ul`
   li {
     margin: 10px 0 10px 0;
     font-size: 14px;
+    @media (max-width: 675px) {
+      font-size: 22px;
+    }
     color: #476974;
     transition: color .1s ease;
     &:hover {

@@ -20,7 +20,7 @@ export const ModdedWalletButton = ({ wallet, balance }: Props) => {
           width={18}
           height={16}/>
         <span>
-          Balance:{" "}
+          {" "}
           {typeof balance === "number"
               ? `${(balance / LAMPORTS_PER_SOL).toLocaleString()} SOL`
               : "--"} 
@@ -39,11 +39,17 @@ export const ModdedWalletButton = ({ wallet, balance }: Props) => {
 
 const button = css`
   display: flex;
+  justify-content: space-evenly;
   align-items: center;
   gap: 12px;
   outline: none;
   border: none;
+  @media (max-width: 675px) {
+    margin: 0 20px 0 0;
+  }
+  box-shadow: none;
   border-radius: 10px;
+  width: 200px;
   height: 40px;
   padding: 7px 28px 7px 28px;
   background: #6099aa;
@@ -57,7 +63,7 @@ const button = css`
   }
   & > span {
     font-weight: inherit;
-    font-size: 20px;
+    font-size: 16px;
   }
 `;
 
@@ -68,7 +74,7 @@ const connected = css`
   }
   & > span {
     font-weight: inherit;
-    font-size: 16px;
+    font-size: 18px;
   }
 `
 

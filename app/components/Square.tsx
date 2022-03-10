@@ -44,6 +44,6 @@ const SquareItem = styled.li`
   height: 150px;
   list-style-type: none;
   &:hover {
-    background: radial-gradient( #cccbcb 1%, transparent 50%);
+    background: radial-gradient( #e7ecf1 1%, transparent 50%);
   }
 `

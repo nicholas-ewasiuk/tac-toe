@@ -47,7 +47,7 @@ export const SearchBar = ({ onClick, connection }: Props) => {
         />
         <BtnInput
           type="submit" 
-          value="+" 
+          value="" 
         />
       </SearchForm>
       <ListItems
@@ -66,6 +66,9 @@ const SearchForm = styled.form`
   align-items: center;
   margin: 20px 0 0 0;
   border-radius: 10px;
+  @media (max-width: 675px) {
+    width: 450px;
+  }
   padding: 5px;
   background: #6b859d;
 `
@@ -73,6 +76,9 @@ const SearchForm = styled.form`
 const TextInput = styled.input`
   border: none;
   border-radius: 10px;
+  @media (max-width: 675px) {
+    width: 350px;
+  }
   padding: 6px;
   background: #dbdfe5;
   font-size: 18px;
@@ -83,9 +89,13 @@ const TextInput = styled.input`
 `
 
 const BtnInput = styled.input`
-  margin: 0 10px 0 10px;
+  margin: 0 5px 0 10px;
   border: none;
   border-radius: 40px;
+  width: 30px;
+  @media (max-width: 675px) {
+    width: 80px;
+  }
   padding: 5px;
   background: #6099aa;
   font-size: 18px;

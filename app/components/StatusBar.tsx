@@ -60,7 +60,14 @@ export const StatusBar = ({ game, wallet, children }: Props) => {
   }, [game, wallet]);
 
   return (
-    <>
+    <div
+      css={css`
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 80px;
+      `}
+    >
       <p
         css={css`
           text-align: center;
@@ -70,6 +77,6 @@ export const StatusBar = ({ game, wallet, children }: Props) => {
         {statusText}
       </p>
       {playerCanJoin && children}
-    </>
+    </div>
   );
 }

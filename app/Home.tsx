@@ -18,6 +18,8 @@ import { GameButton } from './components/GameButton';
 import { SearchBar } from './components/SearchBar';
 import { BoardBackground } from './components/images/BoardBackground';
 import { ModdedWalletButton } from './components/ModdedWalletButton';
+import { breakpoints } from './App';
+
 
 export const Home: React.FC = () => {
   const [ currentGame, setCurrentGame ] = useState<Game | null>(null);
@@ -82,7 +84,16 @@ export const Home: React.FC = () => {
 
   return (
     <AppWrapper>
-      <Main>
+      <div
+        css={css`
+          display: flex;
+          flex-direction: row;
+          margin: 50px 0 0 0;
+          ${breakpoints.mobile} {
+            flex-direction: column;
+          }
+        `}
+      >
         <div
           css={css`
             display:flex;
@@ -100,6 +111,7 @@ export const Home: React.FC = () => {
               flex-direction: column;
               justify-content: center;
               align-items: center;
+              margin: 0 0 20px 0;
               border-radius: 10px;
               padding: 0 20px 20px 20px;
               background: #dbdfe5;
@@ -107,8 +119,9 @@ export const Home: React.FC = () => {
           >
             <p
               css={css`
-                height: 30px;
-                padding-top: 10px;
+                display: flex;
+                align-items: center;
+                height: 60px;
                 text-align: center;
                 color: #476974;
               `}
@@ -140,28 +153,43 @@ export const Home: React.FC = () => {
           css={css`
             display: flex;
             flex-direction: column;
+            ${breakpoints.mobile} {
+              align-items: center;
+            }
           `}
         >
-          <ModdedWalletButton 
-            wallet={wallet}
-            balance={balance}
-          />
-          <RequestBtn
-            disabled={!providerMut}
-            onClick={async () => {
-              const txSig = await connection.requestAirdrop(
-                  providerMut.wallet.publicKey,
-                  LAMPORTS_PER_SOL
-              );
-              await new PendingTransaction(
-                  providerMut.connection,
-                  txSig
-              ).wait();
-              await refetchSOL();
-          }}
+          <div
+            css={css`
+              display: flex;
+              flex-direction: column;
+              align-items: flex-start;
+              ${breakpoints.mobile} {
+                flex-direction: row;
+                align-items: center;
+              }
+            `}
           >
-              Request SOL
-          </RequestBtn>
+            <ModdedWalletButton 
+              wallet={wallet}
+              balance={balance}
+            />
+            <RequestBtn
+              disabled={!providerMut}
+              onClick={async () => {
+                const txSig = await connection.requestAirdrop(
+                    providerMut.wallet.publicKey,
+                    LAMPORTS_PER_SOL
+                );
+                await new PendingTransaction(
+                    providerMut.connection,
+                    txSig
+                ).wait();
+                await refetchSOL();
+            }}
+            >
+                Request SOL
+            </RequestBtn>
+          </div>
           <GameList
             onClick={getListItem}
             title="Active Games"
@@ -185,7 +213,7 @@ export const Home: React.FC = () => {
             connection={connection}
           /> 
         </div>
-      </Main>
+      </div>
     </AppWrapper>
   );
 };
@@ -195,12 +223,6 @@ const AppWrapper = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-
-const Main = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin: 50px 0 0 0;
-`
 
 const Header = styled.h1`
   display: flex;
@@ -217,9 +239,16 @@ const Header = styled.h1`
 
 const RequestBtn = styled.button`
   margin: 10px 0 0 0;
+  @media (max-width: 675px) {
+    margin: 0;
+  }
   border: none;
   border-radius: 10px;
+  width: 200px;
   padding: 7px 28px 7px 28px;
+  @media (max-width: 675px) {
+    padding: 10px 28px 9px 28px;;
+  }
   background: #6099aa;
   font-size: 18px;
   color: #ffffff;
@@ -230,8 +259,9 @@ const RequestBtn = styled.button`
 
 /*
 Todo: 
-  - styling for mobile
+  - tidy breakpoints stuff
   - separate completed games from active
   - delete game button
   - naming games
+  - search icon
 */

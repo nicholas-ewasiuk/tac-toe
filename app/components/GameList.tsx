@@ -5,6 +5,7 @@ import { Connection, PublicKey } from '@solana/web3.js';
 import styled from '@emotion/styled';
 import { DownIcon } from './images/DownIcon';
 import { ListItems } from './ListItems';
+import { breakpoints } from '../App';
 
 type Props = {
   onClick: React.MouseEventHandler;
@@ -22,6 +23,9 @@ export const GameList = ({ onClick, title, address, connection, isActive }: Prop
       css={css`
       display: flex;
       flex-direction: column;
+      ${breakpoints.mobile} {
+        width: 450px;
+      }
       `}
     >
       <ListHeader
