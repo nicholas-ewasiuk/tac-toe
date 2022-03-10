@@ -2,22 +2,22 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { useConnectedWallet, useSolana } from '@saberhq/use-solana';
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
+import { useConnectedWallet, useSolana } from '@saberhq/use-solana';
 import { PendingTransaction } from '@saberhq/solana-contrib';
+import { lighten } from 'polished';
 
+import { Game, getGame } from './state/game';
 import { setupGame } from './actions/setupGame';
 import { playTurn } from './actions/playTurn';
-import { Board } from './components/Board';
 import { joinGame } from './actions/joinGame';
+import { Board } from './components/Board';
 import { GameList } from './components/GameList';
 import { StatusBar } from './components/StatusBar';
 import { GameButton } from './components/GameButton';
 import { SearchBar } from './components/SearchBar';
 import { BoardBackground } from './components/images/BoardBackground';
-import { Game, getGame } from './state/game';
-import { ConnectWalletButton } from '@gokiprotocol/walletkit';
-import { lighten } from 'polished';
+import { ModdedWalletButton } from './components/ModdedWalletButton';
 
 export const Home: React.FC = () => {
   const [ currentGame, setCurrentGame ] = useState<Game | null>(null);
@@ -44,27 +44,23 @@ export const Home: React.FC = () => {
   }
 
   const handleTurnSubmit: React.MouseEventHandler<Element> = async (event) => {
-    event.preventDefault();
     if (!providerMut || !wallet) throw new Error("Wallet not connected.");
     if (!currentGame) throw new Error("Game not selected.");
-
     const target = event.target;
     if (target instanceof HTMLLIElement) {
       const row = target.parentNode.parentNode.value;
       const column = target.value;
-      const turnInput = `{row: ${row}, column: ${column}}`
-      const jsonStr = turnInput.replace(/(\w+:)|(\w+ :)/g, function(matchedStr) {
-        return '"' + matchedStr.substring(0, matchedStr.length - 1) + '":';
-      });
-      const tile = JSON.parse(jsonStr) as {row: number, column: number};
-      console.log('A tile was submitted: ' + JSON.stringify(tile));
-
+      const tile = {
+        row: row,
+        column: column,
+      };
       if (wallet && providerMut && currentGame) {
         await playTurn(providerMut, wallet, currentGame.address, tile);
         const game = await getGame(providerMut, connection, currentGame.address);
         setCurrentGame(game);
       }
     }
+    event.preventDefault();
   }
 
   const getListItem: React.MouseEventHandler<Element> = async (event) => {
@@ -84,19 +80,6 @@ export const Home: React.FC = () => {
     void refetchSOL();
   }, [refetchSOL]);
 
-  /*todo: 
-    -wallet button styling and onconnect change
-    -board svg styling, add refetch board data after submit turn.
-    -change color palette
-    -setup for mobile
-    -request sol balance and button styling
-    -search icon
-    -clean up css
-    -game naming?
-    -closing game accounts
-    -max-height and scrolling for list menus 
-  */
-
   return (
     <AppWrapper>
       <Main>
@@ -107,22 +90,9 @@ export const Home: React.FC = () => {
             margin: 0 40px 0 40px;
           `}
         >
-          <h1
-            css={css`
-              display: flex;
-              justify-content: center;
-              margin: 0px;
-              border-radius: 10px;
-              padding: 10px;
-              ${base};
-              font-family: Roboto Slab, serif;
-              font-size: 48px;
-              font-weight: inherit;
-              color: #ffffff;
-            `}
-          >
+          <Header>
             TIC-TAC-TOE
-          </h1>
+          </Header>
           <div 
             css={css`
               position: relative;
@@ -132,7 +102,7 @@ export const Home: React.FC = () => {
               align-items: center;
               border-radius: 10px;
               padding: 0 20px 20px 20px;
-              ${secondary};
+              background: #dbdfe5;
             `}
           >
             <p
@@ -172,22 +142,26 @@ export const Home: React.FC = () => {
             flex-direction: column;
           `}
         >
-          <ConnectWalletButton
-            css={css`
-              border-radius: 10px;
-              ${base};
-              box-shadow: none;
-              color: #ffffff;
-              transition: background .1s ease;
-              &:hover {
-                background: ${lighten(0.1, "#6b859d")};
-              }
-              & > span {
-                font-weight: inherit;
-                font-size: 20px;
-              }
-            `} 
+          <ModdedWalletButton 
+            wallet={wallet}
+            balance={balance}
           />
+          <RequestBtn
+            disabled={!providerMut}
+            onClick={async () => {
+              const txSig = await connection.requestAirdrop(
+                  providerMut.wallet.publicKey,
+                  LAMPORTS_PER_SOL
+              );
+              await new PendingTransaction(
+                  providerMut.connection,
+                  txSig
+              ).wait();
+              await refetchSOL();
+          }}
+          >
+              Request SOL
+          </RequestBtn>
           <GameList
             onClick={getListItem}
             title="Active Games"
@@ -210,36 +184,6 @@ export const Home: React.FC = () => {
             onClick={getListItem}
             connection={connection}
           /> 
-          <div>
-              Balance:{" "}
-              {typeof balance === "number"
-                  ? `${(balance / LAMPORTS_PER_SOL).toLocaleString()} SOL`
-                  : "--"} 
-          </div>
-          <button
-            css={css`
-              border: none;
-              border-radius: 10px;
-              padding: 7px 28px 7px 28px;
-              ${tertiary};
-              font-size: 18px;
-              color: #ffffff;
-            `}
-            disabled={!providerMut}
-            onClick={async () => {
-              const txSig = await connection.requestAirdrop(
-                  providerMut.wallet.publicKey,
-                  LAMPORTS_PER_SOL
-              );
-              await new PendingTransaction(
-                  providerMut.connection,
-                  txSig
-              ).wait();
-              await refetchSOL();
-          }}
-          >
-              Request SOL
-          </button>
         </div>
       </Main>
     </AppWrapper>
@@ -258,14 +202,28 @@ const Main = styled.div`
   margin: 50px 0 0 0;
 `
 
-const base = css`
+const Header = styled.h1`
+  display: flex;
+  justify-content: center;
+  margin: 0px;
+  border-radius: 10px;
+  padding: 10px;
   background: #6b859d;
+  font-family: Roboto Slab, serif;
+  font-size: 48px;
+  font-weight: inherit;
+  color: #ffffff;
 `
 
-const secondary = css`
-  background: #dbdfe5;
-`
-
-const tertiary = css`
+const RequestBtn = styled.button`
+  margin: 10px 0 0 0;
+  border: none;
+  border-radius: 10px;
+  padding: 7px 28px 7px 28px;
   background: #6099aa;
+  font-size: 18px;
+  color: #ffffff;
+  &:hover {
+    background: ${lighten(0.1, "#6099aa")};
+  }
 `

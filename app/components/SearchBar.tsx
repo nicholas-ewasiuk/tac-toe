@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState } from 'react';
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Connection, ParsedAccountData, PublicKey } from '@solana/web3.js';
+import { Connection, PublicKey } from '@solana/web3.js';
+import { lighten } from 'polished';
 import { ListItems } from './ListItems';
 
 type Props = {
@@ -37,48 +37,19 @@ export const SearchBar = ({ onClick, connection }: Props) => {
   
   return (
     <>
-      <form 
-        css={css`
-          display: flex;
-          justify-content: space-evenly;
-          align-items: center;
-          margin: 20px 0 0 0;
-          border-radius: 10px;
-          padding: 5px;
-          ${base};
-        `}
+      <SearchForm
         onSubmit={handleSearchSubmit}>
-        <input
-          css={css`
-            border: none;
-            border-radius: 10px;
-            padding: 6px;
-            ${secondary}
-            font-size: 18px;
-            color: #78a3af;
-            &:focus {
-              outline: none;
-            }
-          `}
+        <TextInput
           type="text" 
           placeholder="Search Player Address"
           value={searchInput} 
           onChange={updateSearchInput} 
         />
-        <input
-          css={css`
-            margin: 0 10px 0 10px;
-            border: none;
-            border-radius: 40px;
-            padding: 5px;
-            ${tertiary}
-            font-size: 18px;
-            color: #ffffff;
-          `}
+        <BtnInput
           type="submit" 
           value="+" 
         />
-      </form>
+      </SearchForm>
       <ListItems
         onClick={onClick}
         address={searchPubkey}
@@ -89,14 +60,38 @@ export const SearchBar = ({ onClick, connection }: Props) => {
   );
 }
 
-const base = css`
+const SearchForm = styled.form`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 20px 0 0 0;
+  border-radius: 10px;
+  padding: 5px;
   background: #6b859d;
 `
 
-const secondary = css`
+const TextInput = styled.input`
+  border: none;
+  border-radius: 10px;
+  padding: 6px;
   background: #dbdfe5;
+  font-size: 18px;
+  color: #476974;
+  &:focus {
+    outline: none;
+  }
 `
 
-const tertiary = css`
+const BtnInput = styled.input`
+  margin: 0 10px 0 10px;
+  border: none;
+  border-radius: 40px;
+  padding: 5px;
   background: #6099aa;
+  font-size: 18px;
+  color: #ffffff;
+  transition: background .04s ease;
+  &:hover {
+    background: ${lighten(0.1, "#6099aa")};
+  }
 `

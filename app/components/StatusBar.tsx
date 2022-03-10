@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
-import { Game } from '../state/game';
 import { ConnectedWallet } from '@saberhq/use-solana';
+import { Game } from '../state/game';
 
 type Props = {
   game: Game | null,
@@ -64,6 +64,7 @@ export const StatusBar = ({ game, wallet, children }: Props) => {
       <p
         css={css`
           text-align: center;
+          color: #476974;
         `}
       >
         {statusText}

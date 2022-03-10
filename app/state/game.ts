@@ -1,9 +1,9 @@
-import { Commitment, Connection, PublicKey } from "@solana/web3.js";
-import { TIC_TAC_TOE_ID } from "../constants";
-import { ticTacToeIdl } from "../idl/ticTacToeIdl";
+import {  Connection, PublicKey } from "@solana/web3.js";
 import { Idl, Program } from "@project-serum/anchor";
 import { AugmentedProvider } from "@saberhq/solana-contrib";
 import { newProgram } from "@saberhq/anchor-contrib";
+import { TIC_TAC_TOE_ID } from "../constants";
+import { ticTacToeIdl } from "../idl/ticTacToeIdl";
 
 /** Information about a game account */
 export interface Game {
@@ -46,7 +46,6 @@ export async function getGame(
   const program = newProgram<Program>(IDL, programId, provider);
 
   const gameAccount = await program.coder.accounts.decode("Game", info.data);
-  console.log(gameAccount);
   
   return {
     address,

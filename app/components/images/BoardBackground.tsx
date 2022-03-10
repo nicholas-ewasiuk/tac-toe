@@ -1,6 +1,6 @@
-import React, { SVGProps } from 'react';
+import React from 'react';
 
-export const BoardBackground: React.FC<SVGProps<SVGSVGElement>> = ({ width = 450, height = 450, fill = "#ffffff"}) => {
+export const BoardBackground: React.FC<React.SVGProps<SVGSVGElement>> = ({ width = 450, height = 450, fill = "#ffffff"}) => {
   return (
     <svg width={width} height={height} version="1.1" viewBox="0 0 119.06 119.06" xmlns="http://www.w3.org/2000/svg">
       <g>

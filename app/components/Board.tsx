@@ -2,7 +2,6 @@
 import React from 'react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-
 import { Game } from '../state/game';
 import { Square } from './Square';
 
@@ -19,7 +18,7 @@ export const Board = ({title, onClick, game}: Props) => {
       key={index}
       value={index}
       >
-        <SubRow key={index}>
+        <RowChild key={index}>
         {row.map((element: JSX.Element, index) => 
           <Square
             key={index}
@@ -27,7 +26,7 @@ export const Board = ({title, onClick, game}: Props) => {
             element={element ? JSON.stringify(element).slice(2,3) : "\u0000"}
           />
         )}
-        </SubRow>
+        </RowChild>
     </Row>
   );
 
@@ -60,7 +59,7 @@ const Row = styled.li`
   list-style-type: none;
 `
 
-const SubRow = styled.ul`
+const RowChild = styled.ul`
   display: flex;
   flex-direction: row;
   padding: 0px;

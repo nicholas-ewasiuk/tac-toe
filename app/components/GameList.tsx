@@ -1,7 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState } from 'react';
 import { css } from '@emotion/react';
-import { Connection, ParsedAccountData, PublicKey } from '@solana/web3.js';
+import { Connection, PublicKey } from '@solana/web3.js';
+import styled from '@emotion/styled';
 import { DownIcon } from './images/DownIcon';
 import { ListItems } from './ListItems';
 
@@ -23,25 +24,12 @@ export const GameList = ({ onClick, title, address, connection, isActive }: Prop
       flex-direction: column;
       `}
     >
-      <h2
-        css={css`
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-          align-items: center;
-          margin: 20px 0 0 0;
-          border-radius: 10px;
-          padding: 7px 18px 7px 18px;
-          ${base};
-          font-size: 22px;
-          font-weight: inherit;
-          color: #ffffff;
-        `}
+      <ListHeader
         onClick={() => setIsOpen(!isOpen)}
       >
         {title}
         <DownIcon />
-      </h2>
+      </ListHeader>
       {isOpen && address &&
         <ListItems
           onClick={onClick}
@@ -53,6 +41,16 @@ export const GameList = ({ onClick, title, address, connection, isActive }: Prop
   );
 }
 
-const base = css`
+const ListHeader = styled.h2`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0 0 0;
+  border-radius: 10px;
+  padding: 7px 18px 7px 18px;
   background: #6b859d;
+  font-size: 22px;
+  font-weight: inherit;
+  color: #ffffff;
 `
