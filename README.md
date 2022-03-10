@@ -1,5 +1,5 @@
 # Solana Tic-Tac-Toe UI 
-Basic front-end for the <a href="https://book.anchor-lang.com/">Anchor Book</a> Tic-Tac-Toe example.
+Basic front-end for the <a href="https://book.anchor-lang.com/">Anchor Book</a> Tic-Tac-Toe example using Goki Protocol WalletKit and Saber HQ use-solana
 
 Live version at <a href=https://tac-toe-omega.vercel.app>tac-toe-omega.vercel.app</a>
 
