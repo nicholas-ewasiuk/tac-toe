@@ -26,7 +26,7 @@ Connect a wallet and request airdrop of SOL for fees. The app is set to "devnet"
 
 Click "Create New Game" button. 
 
-Get your friends into crypto by forcing them to play with Tic-Tac-Toe with you.
+Get your friends into crypto by forcing them to play with Tic-Tac-Toe with you!
 
 Have them enter your address in the "Search Player Address" bar to see games you've created. Hit join on the game you want.
 
