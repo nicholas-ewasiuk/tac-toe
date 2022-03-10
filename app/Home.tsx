@@ -99,6 +99,9 @@ export const Home: React.FC = () => {
             display:flex;
             flex-direction: column;
             margin: 0 40px 0 40px;
+            ${breakpoints.mobile} {
+              width: 460px;
+            }
           `}
         >
           <Header>
@@ -239,14 +242,14 @@ const Header = styled.h1`
 
 const RequestBtn = styled.button`
   margin: 10px 0 0 0;
-  @media (max-width: 675px) {
+  @media (max-width: 576px) {
     margin: 0;
   }
   border: none;
   border-radius: 10px;
   width: 200px;
   padding: 7px 28px 7px 28px;
-  @media (max-width: 675px) {
+  @media (max-width: 576px) {
     padding: 10px 28px 9px 28px;;
   }
   background: #6099aa;

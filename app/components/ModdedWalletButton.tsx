@@ -44,7 +44,7 @@ const button = css`
   gap: 12px;
   outline: none;
   border: none;
-  @media (max-width: 675px) {
+  @media (max-width: 576px) {
     margin: 0 20px 0 0;
   }
   box-shadow: none;

@@ -17,6 +17,7 @@ export const GameButton = ({ onClick, title }: Props) => {
         border-radius: 10px;
         ${breakpoints.mobile} {
           width: 450px;
+          font-size: 20px;
         }
         padding: 7px 28px 7px 28px;
         background: #6099aa;

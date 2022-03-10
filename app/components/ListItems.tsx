@@ -3,8 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { AccountInfo, ParsedAccountData, PublicKey } from '@solana/web3.js';
 import { EmotionJSX } from '@emotion/react/types/jsx-namespace';
 import { Connection } from '@solana/web3.js';
-import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 import { searchGames } from '../actions/searchGames';
+import { breakpoints } from '../App';
+
 
 type Props = {
   onClick: React.MouseEventHandler;
@@ -49,33 +51,33 @@ export const ListItems = ({ onClick, address, connection, isActive }: Props) => 
   }, [gameAccounts])
 
   return (
-    <List
+    <ul
+      css={css`
+        display: flex;
+        flex-direction: column;
+        margin: 0 0 0 0;
+        border-radius: 10px;
+        padding: 0px 0 0px 0;
+        background: #dbdfe5;
+        text-align: center;
+        list-style: none;
+        li {
+          margin: 10px 0 10px 0;
+          font-size: 14px;
+          ${breakpoints.mobile} {
+            font-size: 22px;
+          }
+          color: #476974;
+          transition: color .1s ease;
+          &:hover {
+            color: #000000;
+          }
+        }
+      `}
       onClick={onClick}
     >
       {listItems}
-    </List>
+    </ul>
   );
 }
 
-const List = styled.ul`
-  display: flex;
-  flex-direction: column;
-  margin: 0 0 0 0;
-  border-radius: 10px;
-  padding: 0px 0 0px 0;
-  background: #dbdfe5;
-  text-align: center;
-  list-style: none;
-  li {
-    margin: 10px 0 10px 0;
-    font-size: 14px;
-    @media (max-width: 675px) {
-      font-size: 22px;
-    }
-    color: #476974;
-    transition: color .1s ease;
-    &:hover {
-      color: #000000;
-    }
-  }
-`

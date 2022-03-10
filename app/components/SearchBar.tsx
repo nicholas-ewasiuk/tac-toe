@@ -3,7 +3,10 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { lighten } from 'polished';
+import { css } from '@emotion/react';
 import { ListItems } from './ListItems';
+import { breakpoints } from '../App';
+
 
 type Props = {
   onClick: React.MouseEventHandler;
@@ -37,19 +40,62 @@ export const SearchBar = ({ onClick, connection }: Props) => {
   
   return (
     <>
-      <SearchForm
+      <form
+        css={css`
+          display: flex;
+          justify-content: space-evenly;
+          align-items: center;
+          margin: 20px 0 0 0;
+          border-radius: 10px;
+          ${breakpoints.mobile} {
+            width: 450px;
+          }
+          padding: 5px;
+          background: #6b859d;
+        `}
         onSubmit={handleSearchSubmit}>
-        <TextInput
+        <input
+          css={css`
+            border: none;
+            border-radius: 10px;
+            ${breakpoints.mobile} {
+              width: 350px;
+            }
+            padding: 6px;
+            background: #dbdfe5;
+            font-size: 18px;
+            color: #476974;
+            &:focus {
+              outline: none;
+            }
+          `}
           type="text" 
           placeholder="Search Player Address"
           value={searchInput} 
           onChange={updateSearchInput} 
         />
-        <BtnInput
+        <input
+          css={css`
+            margin: 0 5px 0 10px;
+            border: none;
+            border-radius: 40px;
+            width: 30px;
+            ${breakpoints.mobile} {
+              width: 80px;
+            }
+            padding: 5px;
+            background: #6099aa;
+            font-size: 18px;
+            color: #ffffff;
+            transition: background .04s ease;
+            &:hover {
+              background: ${lighten(0.1, "#6099aa")};
+            }
+          `}
           type="submit" 
           value="" 
         />
-      </SearchForm>
+      </form>
       <ListItems
         onClick={onClick}
         address={searchPubkey}
@@ -59,49 +105,3 @@ export const SearchBar = ({ onClick, connection }: Props) => {
     </>
   );
 }
-
-const SearchForm = styled.form`
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  margin: 20px 0 0 0;
-  border-radius: 10px;
-  @media (max-width: 675px) {
-    width: 450px;
-  }
-  padding: 5px;
-  background: #6b859d;
-`
-
-const TextInput = styled.input`
-  border: none;
-  border-radius: 10px;
-  @media (max-width: 675px) {
-    width: 350px;
-  }
-  padding: 6px;
-  background: #dbdfe5;
-  font-size: 18px;
-  color: #476974;
-  &:focus {
-    outline: none;
-  }
-`
-
-const BtnInput = styled.input`
-  margin: 0 5px 0 10px;
-  border: none;
-  border-radius: 40px;
-  width: 30px;
-  @media (max-width: 675px) {
-    width: 80px;
-  }
-  padding: 5px;
-  background: #6099aa;
-  font-size: 18px;
-  color: #ffffff;
-  transition: background .04s ease;
-  &:hover {
-    background: ${lighten(0.1, "#6099aa")};
-  }
-`
