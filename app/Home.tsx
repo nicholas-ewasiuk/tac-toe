@@ -20,8 +20,6 @@ import { ModdedWalletButton } from './components/ModdedWalletButton';
 import { FaucetButton } from './components/FaucetButton';
 import { breakpoints } from './App';
 
-
-
 export const Home: React.FC = () => {
   const [ currentGame, setCurrentGame ] = useState<Game | null>(null);
   const [ balance, setBalance ] = useState<number | null>(null);
