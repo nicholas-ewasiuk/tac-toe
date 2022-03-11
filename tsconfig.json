@@ -2,8 +2,6 @@
   "compilerOptions": {
       "noEmit": true,
       "target": "es6",
-      "watch": true,
-      "lib": ["dom", "es2017"],
       "module": "commonjs",
       "moduleResolution": "node",
       "jsx": "react",
