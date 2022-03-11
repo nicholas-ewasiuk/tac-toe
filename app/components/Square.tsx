@@ -47,6 +47,7 @@ export const Square = ({ element, value }: Props) => {
           height: 100px;
         }
         list-style-type: none;
+        cursor: pointer;
         &:hover {
           background: radial-gradient( #e7ecf1 1%, transparent 50%);
         }

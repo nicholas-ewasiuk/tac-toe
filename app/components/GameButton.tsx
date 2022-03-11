@@ -25,6 +25,7 @@ export const GameButton = ({ onClick, title }: Props) => {
         }
         padding: 7px 28px 7px 28px;
         background: #6099aa;
+        cursor: pointer;
         font-size: 18px;
         color: #ffffff;
         transition: background .1s ease;

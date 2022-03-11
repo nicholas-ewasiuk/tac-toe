@@ -43,6 +43,7 @@ export const GameList = ({ onClick, title, address, connection, isActive }: Prop
           }
           padding: 7px 18px 7px 18px;
           background: #6b859d;
+          cursor: pointer;
           font-size: 22px;
           font-weight: inherit;
           color: #ffffff;

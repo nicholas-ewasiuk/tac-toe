@@ -27,6 +27,7 @@ export const FaucetButton = ({ onClick, title }: Props) => {
           padding: 10px 28px 9px 28px;;
         }
         background: #6099aa;
+        cursor: pointer;
         font-size: 18px;
         color: #ffffff;
         &:hover {

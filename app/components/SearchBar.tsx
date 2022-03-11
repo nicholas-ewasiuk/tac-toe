@@ -92,6 +92,7 @@ export const SearchBar = ({ onClick, connection }: Props) => {
             }
             padding: 5px;
             background: #6099aa;
+            cursor: pointer;
             font-size: 18px;
             color: #ffffff;
             transition: background .04s ease;
