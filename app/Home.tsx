@@ -84,6 +84,7 @@ export const Home: React.FC = () => {
 
   const requestAirdrop: React.MouseEventHandler<Element> = async () => {
     if (!providerMut || !wallet) throw new Error("Wallet not connected.");
+    try {
     const txSig = await connection.requestAirdrop(
         providerMut.wallet.publicKey,
         LAMPORTS_PER_SOL
@@ -92,11 +93,10 @@ export const Home: React.FC = () => {
         providerMut.connection,
         txSig
     ).wait();
-    try {
-      await refetchSOL();
     } catch (e) {
       console.log(e);
     }
+    await refetchSOL();
   }
 
   useEffect(() => {
