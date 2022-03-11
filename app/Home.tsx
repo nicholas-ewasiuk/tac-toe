@@ -92,7 +92,11 @@ export const Home: React.FC = () => {
         providerMut.connection,
         txSig
     ).wait();
-    await refetchSOL();
+    try {
+      await refetchSOL();
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   useEffect(() => {
