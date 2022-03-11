@@ -32,6 +32,7 @@ export async function setupGame(
       },
       signers: [gameKeypair]
     });
+    return gameKeypair;
   } catch (e) {
     console.log(e);
   }
