@@ -37,13 +37,18 @@ export const Home: React.FC = () => {
 
   const handleSetupGame = async () => {
     if (!providerMut || !wallet) throw new Error("Wallet not connected.");
-      await setupGame(providerMut, wallet);
+      const gameAddress = await setupGame(providerMut, wallet);
+      if (!gameAddress) throw new Error("Failed to create game.");
+      const game = await getGame(providerMut, connection, gameAddress.publicKey);
+      setCurrentGame(game);
   }
 
   const handleJoinGame = async () => {
     if (!providerMut || !wallet) throw new Error("Wallet not connected.");
     if (!currentGame) throw new Error("No game selected");
       await joinGame(providerMut, wallet, currentGame.address);
+      const game = await getGame(providerMut, connection, currentGame.address);
+      setCurrentGame(game);
   }
 
   const handleTurnSubmit: React.MouseEventHandler<Element> = async (event) => {
