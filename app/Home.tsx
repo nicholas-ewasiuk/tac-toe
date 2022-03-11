@@ -95,6 +95,7 @@ export const Home: React.FC = () => {
     ).wait();
     } catch (e) {
       console.log(e);
+      await refetchSOL();
     }
     await refetchSOL();
   }
