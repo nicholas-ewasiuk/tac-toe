@@ -254,5 +254,5 @@ Todo:
   - separate completed games from active
   - delete game button
   - naming games
-  - search icon
+  - solana name service address support
 */
