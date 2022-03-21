@@ -16,7 +16,7 @@ import { StatusBar } from './components/StatusBar';
 import { GameButton } from './components/GameButton';
 import { SearchBar } from './components/SearchBar';
 import { BoardBackground } from './components/images/BoardBackground';
-import { ModdedWalletButton } from './components/ModdedWalletButton';
+import { WalletButton } from './components/WalletButton';
 import { FaucetButton } from './components/FaucetButton';
 import { breakpoints } from './App';
 
@@ -209,7 +209,7 @@ export const Home: React.FC = () => {
               }
             `}
           >
-            <ModdedWalletButton 
+            <WalletButton 
               wallet={wallet}
               balance={balance}
             />

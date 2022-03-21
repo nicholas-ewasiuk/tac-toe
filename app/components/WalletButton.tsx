@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { lighten } from 'polished';
-import { ConnectedWallet } from '@saberhq/use-solana';
-import { ConnectWalletButton } from '@gokiprotocol/walletkit';
+import { ConnectedWallet, useWallet } from '@saberhq/use-solana';
+import { useWalletKit } from '@gokiprotocol/walletkit';
 import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { SolLogo } from './images/SolLogo';
 import { breakpoints } from '../App';
@@ -15,7 +15,9 @@ type Props = {
 /**
  * Added functionality and styles for the @gokiprotocol/walletkit "ConnectWalletButton".
  */
-export const ModdedWalletButton = ({ wallet, balance }: Props) => {
+export const WalletButton = ({ wallet, balance }: Props) => {
+  const { connect } = useWalletKit();
+
   return (
     <>
     { wallet ? (
@@ -38,11 +40,22 @@ export const ModdedWalletButton = ({ wallet, balance }: Props) => {
         </span>
       </button>
     ) : (
-      <ConnectWalletButton
-        css={css`
-          ${button}
-        `} 
-      />
+      <button
+        css={[button]}
+        onClick={connect}
+      >
+        <div
+          css={css`
+            width: 18px;
+            ${breakpoints.mobile} {
+              width: 40px;
+            }
+          `}
+        >
+          <SolLogo />
+        </div>
+        <span>Connect Wallet</span>
+      </button>
     )}
     </>
   )
@@ -66,7 +79,6 @@ const button = css`
   height: 40px;
   padding: 7px 28px 7px 28px;
   background: #6099aa;
-  font-size: 18px;
   color: #ffffff;
   transition: background .1s ease;
   &:hover {
