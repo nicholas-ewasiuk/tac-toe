@@ -24,7 +24,7 @@ export const Home: React.FC = () => {
   const [ currentGame, setCurrentGame ] = useState<Game | null>(null);
   const [ balance, setBalance ] = useState<number | null>(null);
 
-  const { providerMut, connection } = useSolana();
+  const { providerMut, connection, network } = useSolana();
   const wallet = useConnectedWallet();
 
   const refetchSOL = useCallback(async () => {
@@ -94,6 +94,10 @@ export const Home: React.FC = () => {
     ).wait();
     await refetchSOL();
   }
+
+  useEffect(() => {
+    console.log(`connected to network: ${network}`)
+  }, [network]);
 
   useEffect(() => {
     void refetchSOL();

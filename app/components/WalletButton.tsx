@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { lighten } from 'polished';
-import { ConnectedWallet, useWallet } from '@saberhq/use-solana';
+import { ConnectedWallet } from '@saberhq/use-solana';
 import { useWalletKit } from '@gokiprotocol/walletkit';
 import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { SolLogo } from './images/SolLogo';
