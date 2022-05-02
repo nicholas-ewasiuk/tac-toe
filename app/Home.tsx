@@ -111,7 +111,6 @@ export const Home: React.FC = () => {
     void refetchSOL();
   }, [refetchSOL]);
 
-
   useEffect(() => {
     const timerId = setInterval(() => {
       refreshBoard();
@@ -119,7 +118,6 @@ export const Home: React.FC = () => {
 
     return () => clearInterval(timerId)
   }, [wallet, currentGame]);
-
 
   return (
     <AppWrapper>
