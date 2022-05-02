@@ -33,6 +33,14 @@ export const Home: React.FC = () => {
     }
   }, [providerMut, wallet]);
 
+  const refreshBoard = async () => {
+    if (!wallet || !currentGame || !providerMut) {
+      return
+    }
+    const game = await getGame(providerMut, connection, currentGame.address);
+    setCurrentGame(game);
+  };
+
   const handleSetupGame = async () => {
     if (!providerMut || !wallet) throw new Error("Wallet not connected.");
       const gameAddress = await setupGame(providerMut, wallet);
@@ -102,6 +110,16 @@ export const Home: React.FC = () => {
   useEffect(() => {
     void refetchSOL();
   }, [refetchSOL]);
+
+
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      refreshBoard();
+    }, 5000);
+
+    return () => clearInterval(timerId)
+  }, [wallet, currentGame]);
+
 
   return (
     <AppWrapper>
