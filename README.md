@@ -42,5 +42,5 @@ Follow the <a href="https://www.anchor-lang.com/docs/installation">guide</a> her
 
 Run `anchor test`
 
-Follow the <a href="https://book.anchor-lang.com/chapter_3/milestone_project_tic-tac-toe.html">guide</a> at the bottom of the page here to deploy on "devnet".
+Follow the <a href="https://book.anchor-lang.com/anchor_in_depth/milestone_project_tic-tac-toe.html">guide</a> at the bottom of the page here to deploy on "devnet".
 
