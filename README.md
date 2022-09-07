@@ -38,7 +38,7 @@ Play the game by clicking the square you want on your turn, submit the transacti
 
 Install the Anchor dependencies.
 
-Follow the <a href="https://project-serum.github.io/anchor/getting-started/installation.html#install-rust">guide</a> here.
+Follow the <a href="https://www.anchor-lang.com/docs/installation">guide</a> here.
 
 Run `anchor test`
 
